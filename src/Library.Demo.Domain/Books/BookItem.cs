@@ -1,6 +1,6 @@
 ﻿namespace Library.Demo.Domain;
 
-public class Class1
+public class BookItem
 {
 
 }
