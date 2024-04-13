@@ -1,7 +1,8 @@
 namespace Library.Demo.Domain;
 
 public abstract class UserAccount{
-    public string? Password { get; private set; }
+    public string Username { get; private set; } = string.Empty;
+    public string Password { get; private set; } = string.Empty;
     public UserAccountStatus Status { get; private set; }
     public Person? Person { get; private set; }
     public LibraryCard? LibraryCard { get; private set; }
@@ -12,4 +13,8 @@ public abstract class UserAccount{
 }
 
 public class LibraryMember{}
-public class Librarian{}
+public class Librarian{
+    public void AddBookItem(Book bookItem){}
+    public void BlockMember(LibraryMember member){}
+    public void UnBlockMember(LibraryMember member){}
+}
