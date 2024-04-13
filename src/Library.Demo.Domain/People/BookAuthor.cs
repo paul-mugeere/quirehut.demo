@@ -1,6 +1,6 @@
 namespace Library.Demo.Domain;
 
-public class Author : Person
+public class BookAuthor : Person
 {
     public List<Book>? Bookspublished { get; private set;}
 }

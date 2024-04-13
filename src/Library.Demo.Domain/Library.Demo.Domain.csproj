@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Books/" />
     <Folder Include="People/" />
     <Folder Include="UserAccounts/" />
   </ItemGroup>
