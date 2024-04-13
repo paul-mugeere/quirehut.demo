@@ -1,6 +1,6 @@
 namespace Library.Demo.Domain;
 
-public enum BookStatus
+public enum BookItemStatus
 {
     Available = 1,
     Reserved = 2,
