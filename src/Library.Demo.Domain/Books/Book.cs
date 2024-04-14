@@ -2,7 +2,6 @@
 
 public record Book
 {
-
     public BookId Id { get; private set; } = BookId.Empty;
     public string ISBN { get; private set; } = string.Empty;
     public string Title { get; private set; } = string.Empty;
@@ -11,9 +10,15 @@ public record Book
     public string Language { get; private set; } = string.Empty;
     public int NumberOfPages { get; private set; }
     public BookFormat BookFormat { get; private set; }
-    public ICollection<BookAuthor> Authors { get; private set; } = [];
+    public ICollection<BookAuthor> BookAuthors { get; private set; } = [];
+    public ICollection<BookItem> BookItems { get; private set; } = [];
 
-    public static Book CreateNew()=> new (){Id=BookId.CreateNew()};
+    private Book(){}
+    public void AddBookItem(BookItem bookItem){
+        BookItems.Add(bookItem);
+    }
+
+    public static Book CreateNew()=> new ();
     public static Book CreateNew(string ISBN, string title, string subject, string publisher, string language, int numberOfPages, BookFormat bookFormat, ICollection<BookAuthor> authors)
     {
         return new ()
@@ -26,7 +31,7 @@ public record Book
             Language = language,
             NumberOfPages = numberOfPages,
             BookFormat = bookFormat,
-            Authors = authors,
+            BookAuthors = authors,
         };
     }
 

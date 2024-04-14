@@ -13,7 +13,7 @@ public abstract class UserAccount{
 }
 
 public class LibraryMember{}
-public class Librarian{
+public class LibraryStaff{
     public void AddBookItem(Book bookItem){}
     public void BlockMember(LibraryMember member){}
     public void UnBlockMember(LibraryMember member){}
