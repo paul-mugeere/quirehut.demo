@@ -23,4 +23,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Library.Demo.Domain\Library.Demo.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
