@@ -10,29 +10,45 @@ public record Book
     public string Language { get; private set; } = string.Empty;
     public int NumberOfPages { get; private set; }
     public BookFormat BookFormat { get; private set; }
-    public ICollection<BookAuthor> BookAuthors { get; private set; } = [];
+
+    //These are copies of a book
     public ICollection<BookItem> BookItems { get; private set; } = [];
 
-    private Book(){}
-    public void AddBookItem(BookItem bookItem){
+    private Book() { }
+
+    //ToDo: do we work with BookItemIds or BookItems??
+    public void AddBookItem(DateTime dateOfPurchase, Rack? placedAt =null)
+    {
+        var bookItem = BookItem.CreateNew(Id, dateOfPurchase, placedAt);
         BookItems.Add(bookItem);
     }
 
-    public static Book CreateNew()=> new ();
-    public static Book CreateNew(string ISBN, string title, string subject, string publisher, string language, int numberOfPages, BookFormat bookFormat, ICollection<BookAuthor> authors)
+    public void RemoveBookItem(BookItemId bookItemId){
+        throw new NotImplementedException();
+    }
+
+    public static Book CreateNew() => new();
+    public static Book CreateNew(string ISBN, string title, string language, int numberOfPages)
     {
-        return new ()
+        return new()
         {
             Id = BookId.CreateNew(),
             ISBN = ISBN,
             Title = title,
-            Subject = subject,
-            Publisher = publisher,
             Language = language,
-            NumberOfPages = numberOfPages,
-            BookFormat = bookFormat,
-            BookAuthors = authors,
+            NumberOfPages = numberOfPages
         };
+    }
+
+}
+
+public record BookLoan{
+    
+    public DateTime? DateBorrowed { get; private set; } // this is an aspect of BookLoan
+    public DateTime? DateDue { get; private set; } // this is an aspect of BookLoan
+    
+    public void CheckoutBookItem(PersonId personId, BookItemId bookItemId){
+        throw new NotImplementedException();
     }
 
 }

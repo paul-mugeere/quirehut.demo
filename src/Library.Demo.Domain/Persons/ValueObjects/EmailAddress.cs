@@ -4,7 +4,7 @@ namespace Library.Demo.Domain;
 
 public record EmailAddress
 {
-    public string Value { get; }
+    public string Value { get; } = string.Empty;
     public static EmailAddress Empty { get; } = new();
 
 

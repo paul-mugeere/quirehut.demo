@@ -9,7 +9,9 @@ public record Person
     public string? LastName { get; protected set; }
     public EmailAddress Email { get; protected set; } = EmailAddress.Empty;
     public string? Phone { get; protected set; }
-    public ICollection<Address> Addresses { get; protected set; } = [];
+    public ICollection<Address> Addresses { get;  set; } = [];
+
+    // public IReadOnlyList<Address> ListOfAddresses => Addresses.ToList();
     // public UserAccount? UserAccount { get; protected set; }
 
     private Person() { }

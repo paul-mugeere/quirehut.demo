@@ -2,7 +2,7 @@
 
 namespace Library.Demo.Domain.Tests;
 
-public class GivenPerson
+public class PersonTests
 {
     [Fact]
     public void Given_Person_AddAddresses_Should_Add_New_Address()
@@ -12,7 +12,7 @@ public class GivenPerson
             Address.CreateNew(person.Id, "test-country", "test-city", "test-state", "test-postcode", "test-street")
              };
         person.AddAddresses(addresses);
-        person.Addresses.ToList().Should().HaveCount(1);
+        person.Addresses.Should().HaveCount(1);
 
     }
 }
