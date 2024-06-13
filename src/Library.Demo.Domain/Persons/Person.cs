@@ -16,20 +16,20 @@ public record Person
 
     private Person() { }
 
-    public static Person CreateNew(string firstname, string lastname, string email = "", string phone = "")
+    public static Person CreateNew(string firstname, string lastname, EmailAddress email, string phone = "")
     {
         return new()
         {
             Id = new(Guid.NewGuid()),
             FirstName = firstname,
             LastName = lastname,
-            Email = new EmailAddress(email),
+            Email = email,
             Phone = phone
         };
 
     }
 
-    public void AddAddresses(List<Address> addresses)
+    public void AddAddresses(IEnumerable<Address> addresses)
     {   
         Addresses = [..Addresses, ..addresses];
     }

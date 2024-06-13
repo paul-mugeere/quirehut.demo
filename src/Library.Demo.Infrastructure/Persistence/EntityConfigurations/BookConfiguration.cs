@@ -14,6 +14,15 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         builder.Property(x => x.Id)
         .HasConversion(c => c.Value, value => new(value));
 
+        builder.Property(x => x.ISBN)
+        .HasConversion(c => c.Value, value => new(value));
+
+        builder.Property(x => x.Title)
+        .HasConversion(c => c.Value, value => new(value));
+
+        builder.Property(x => x.Subject)
+        .HasConversion(c => c.Value, value => new(value));
+
         builder.OwnsMany(x => x.BookItems, nb =>
         {
             nb.ToTable("booksItems");

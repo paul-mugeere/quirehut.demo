@@ -1,11 +1,13 @@
-﻿namespace Library.Demo.Domain;
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace Library.Demo.Domain;
 
 public record Book
 {
     public BookId Id { get; private set; } = BookId.Empty;
-    public string ISBN { get; private set; } = string.Empty;
-    public string Title { get; private set; } = string.Empty;
-    public string Subject { get; private set; } = string.Empty;
+    public ISBN ISBN { get; private set; } = ISBN.Empty;
+    public BookTitle Title { get; private set; } = BookTitle.Empty;
+    public BookSubject Subject { get; private set; } = BookSubject.Empty;
     public string Publisher { get; private set; } = string.Empty;
     public string Language { get; private set; } = string.Empty;
     public int NumberOfPages { get; private set; }
@@ -17,39 +19,44 @@ public record Book
     private Book() { }
 
     //ToDo: do we work with BookItemIds or BookItems??
-    public void AddBookItem(DateTime dateOfPurchase, Rack? placedAt =null)
+    public void AddBookItem(DateTime dateOfPurchase, Rack? placedAt = null)
     {
         var bookItem = BookItem.CreateNew(Id, dateOfPurchase, placedAt);
         BookItems.Add(bookItem);
     }
 
-    public void RemoveBookItem(BookItemId bookItemId){
+    public void RemoveBookItem(BookItemId bookItemId)
+    {
         throw new NotImplementedException();
     }
 
-    public static Book CreateNew() => new();
-    public static Book CreateNew(string ISBN, string title, string language, int numberOfPages)
+    public bool BorrowBookItem()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool ReturnBookItem()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool ReserveBookItem()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static Book CreateNew(
+        ISBN ISBN,
+        BookTitle title,
+        BookSubject subject)
     {
         return new()
         {
             Id = BookId.CreateNew(),
             ISBN = ISBN,
             Title = title,
-            Language = language,
-            NumberOfPages = numberOfPages
+            Subject = subject
         };
     }
 
 }
-
-public record BookLoan{
-    
-    public DateTime? DateBorrowed { get; private set; } // this is an aspect of BookLoan
-    public DateTime? DateDue { get; private set; } // this is an aspect of BookLoan
-    
-    public void CheckoutBookItem(PersonId personId, BookItemId bookItemId){
-        throw new NotImplementedException();
-    }
-
-}
-
