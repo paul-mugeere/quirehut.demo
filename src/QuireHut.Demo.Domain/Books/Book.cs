@@ -9,8 +9,8 @@ public record Book
     public Title Title { get; } = Title.Empty;
     public Subject Subject { get; } = Subject.Empty;
 
-    private List<Genre> _genres { get; } = []; //ToDo: how better do we model this? 
-    public IReadOnlyList<Genre> Genres => _genres.AsReadOnly();
+    private List<GenreId> _genreIds { get; } = []; 
+    public IReadOnlyList<GenreId> GenreIds => _genreIds.AsReadOnly();
 
     private List<Edition> _editions { get; } = [];
     public IReadOnlyList<Edition> Editions => _editions.AsReadOnly();
@@ -30,9 +30,10 @@ public record Book
         edition.UpdateStatus(status);
     }
 
-    public void RemoveEdition(EditionId editionId) {
-        _editions.RemoveAll(e=>e.Id == editionId);
-     }
+    public void RemoveEdition(EditionId editionId)
+    {
+        _editions.RemoveAll(e => e.Id == editionId);
+    }
 
     public void UpdatePrice(EditionId editionId, decimal price)
     {
@@ -46,14 +47,17 @@ public record Book
         edition.UpdateStock(stock);
     }
 
-    public void AddGenre(Genre genre) {
-        _genres.Add(genre);
+    public void AddGenre(GenreId genreId)
+    {
+        _genreIds.Add(genreId);
         EnsureInvariants();
-     }
+    }
 
-    public void RemoveGenre(GenreId genreId) {
-        _genres.RemoveAll(g=>g.Id == genreId);
-     }
+    public void RemoveGenre(GenreId genreId)
+    {
+        if (_genreIds.Contains(genreId))
+            _genreIds.RemoveAll(id => id == genreId);
+    }
 
     public static Book CreateNew(
         Title title,
@@ -99,11 +103,11 @@ public record Book
 
     private Edition TryGetEditionOfId(EditionId editionId)
     {
-        var editionsDictionary = _editions.ToDictionary(x => x.Id, x => x)?? new Dictionary<EditionId, Edition>();
+        var editionsDictionary = _editions.ToDictionary(x => x.Id, x => x) ?? new Dictionary<EditionId, Edition>();
         return editionsDictionary.TryGetValue(editionId, out var edition) ? edition : throw new InvalidOperationException("Edition not found");
     }
 
-    private bool HasDuplicateGenres() => _genres.Count() != _genres.DistinctBy(g=>g.Name).Count();
+    private bool HasDuplicateGenres() => _genreIds.Count() != _genreIds.Distinct().Count();
 
 
     // For serialization

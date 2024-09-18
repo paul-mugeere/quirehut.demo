@@ -128,18 +128,18 @@ public class BookTests
     [Fact]
     public void AddGenre_ToBook_ShouldIncludeTheGenreInTheBookGenres()
     {
-        var genreToAdd = Genre.CreateNew("test-genre", "some-description");
+        var genreToAdd = GenreId.CreateNew();
         var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [Author.CreateNew("test-author", "test-bibliography")]);
 
         book.AddGenre(genreToAdd);
 
-        book.Genres.Should().Contain(genreToAdd);
+        book.GenreIds.Should().Contain(genreToAdd);
     }
 
     [Fact]
     public void AddGenre_ThatAlreadyExists_ShouldThrowAnInvalidBookException()
     {
-        var genreToAdd = Genre.CreateNew("test-genre", "some-description");
+        var genreToAdd = GenreId.CreateNew();
         var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [Author.CreateNew("test-author", "test-bibliography")]);
         book.AddGenre(genreToAdd);
 
@@ -151,13 +151,13 @@ public class BookTests
     [Fact]
     public void RemoveGenre_FromBook_ShouldRemoveTheGenreFromTheBookGenres()
     {
-        var genreToRemove = Genre.CreateNew("test-genre", "some-description");
+        var genreToRemove = GenreId.CreateNew();
         var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [Author.CreateNew("test-author", "test-bibliography")]);
         book.AddGenre(genreToRemove);
 
-        book.RemoveGenre(genreToRemove.Id);
+        book.RemoveGenre(genreToRemove);
 
-        book.Genres.Should().NotContain(genreToRemove);
+        book.GenreIds.Should().NotContain(genreToRemove);
     }
 
     [Fact]

@@ -7,8 +7,6 @@ public record Genre
     public GenreId Id { get; private set; } = GenreId.Empty;
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; }
-    private List<Book> Books { get;  set; } = [];
-    public IReadOnlyList<Book> BooksList => Books.AsReadOnly();
 
     private Genre() { }
 
