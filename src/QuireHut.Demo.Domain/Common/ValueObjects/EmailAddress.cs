@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace QuireHut.Demo.Domain;
 
-public record EmailAddress
+public readonly record struct EmailAddress
 {
     public string Value { get; } = string.Empty;
     public static EmailAddress Empty { get; } = new();
@@ -38,6 +38,4 @@ public record EmailAddress
     {
         return Value;
     }
-
-    private EmailAddress() { }
 }

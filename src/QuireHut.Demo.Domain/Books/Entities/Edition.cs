@@ -8,11 +8,10 @@ public record Edition
     public Book Book { get;}
     public ISBN ISBN { get;} = ISBN.Empty; // should an edition have its own ISBN, some can!
     public Format Format { get;}
-    public Dimensions Dimensions { get;} = Dimensions.Default;
+    public Dimensions Dimensions { get;} = Dimensions.Empty;
     public decimal Price { get; private set; }
     public int NumberOfPages { get;}
     public int Stock { get; private set; }
-    public PublisherId PublisherId { get;} = PublisherId.Empty;
     public Publisher Publisher { get;} 
     public DateTime? PublicationDate { get;}
     public string Language { get;} = string.Empty;
