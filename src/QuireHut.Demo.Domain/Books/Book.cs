@@ -15,8 +15,8 @@ public record Book
     private List<Edition> _editions { get; } = [];
     public IReadOnlyList<Edition> Editions => _editions.AsReadOnly();
 
-    private List<Author> _authors { get; } = [];
-    public IReadOnlyList<Author> Authors => _authors.AsReadOnly();
+    private List<AuthorId> _authorIds { get; } = [];
+    public IReadOnlyList<AuthorId> AuthorIds => _authorIds.AsReadOnly();
 
     public void AddEdition(Edition edition)
     {
@@ -63,19 +63,19 @@ public record Book
         Title title,
         Subject subject,
         List<Edition> editions,
-        List<Author> authors) =>
+        List<AuthorId> authors) =>
         new(title, subject, editions, authors);
 
     private Book(
     Title title,
     Subject subject,
     List<Edition> editions,
-    List<Author> authors)
+    List<AuthorId> authors)
     {
         Id = BookId.CreateNew();
         Title = title;
         Subject = subject;
-        _authors = authors;
+        _authorIds = authors;
         _editions = editions;
 
         EnsureInvariants();
@@ -98,7 +98,7 @@ public record Book
         return _editions.Count() != _editions.DistinctBy(x => x.ISBN).Count();
     }
 
-    private bool HasNoAuthors() => _authors.Count == 0;
+    private bool HasNoAuthors() => _authorIds.Count == 0;
     private bool HasNoEditions() => _editions.Count == 0;
 
     private Edition TryGetEditionOfId(EditionId editionId)

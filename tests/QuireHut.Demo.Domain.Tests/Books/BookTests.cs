@@ -16,13 +16,13 @@ public class BookTests
         var edition = Edition.CreateNew(EditionId.Empty, new ISBN("test-isbn"), Format.HardPaper, "English", new Dimensions(23, 14, 45), 1000, 200, EditionStatus.Planned);
 
         // When
-        var book = Book.CreateNew(title, subject, [edition], [author]);
+        var book = Book.CreateNew(title, subject, [edition], [author.Id]);
 
         // Then
         book.Should().NotBeNull();
         book.Title.Should().Be(title);
         book.Subject.Should().Be(subject);
-        book.Authors.Should().Contain(author);
+        book.AuthorIds.Should().Contain(author.Id);
         book.Editions.Should().NotBeEmpty();
         book.Editions.Should().Contain(edition);
     }
@@ -37,7 +37,7 @@ public class BookTests
         var author = Author.CreateNew("test-author", "test-bibliography");
 
         // When
-        var act = () => Book.CreateNew(title, subject, [], [author]);
+        var act = () => Book.CreateNew(title, subject, [], [author.Id]);
 
         // Then
         act.Should().Throw<InvalidBookException>().Where(x => x.Message.Equals("A book must have at least 1 edition."));
@@ -66,7 +66,7 @@ public class BookTests
     {
         var editionToAdd = Edition.CreateNew(EditionId.Empty, new("test-isbn2"), Format.HardPaper, "test-language", new Dimensions(2, 5, 6), 1000, 200, EditionStatus.Planned);
         var bookEdition = Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 1000, 200, EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [Author.CreateNew("test-author", "test-bibliography")]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [AuthorId.CreateNew()]);
         book.AddEdition(editionToAdd);
 
         book.Editions.Should().Contain(editionToAdd);
@@ -80,7 +80,7 @@ public class BookTests
         var existingBookEdition = Edition.CreateNew(EditionId.Empty, new("test-isbn"), Format.AudioBook, "test-language3", new Dimensions(), 1000, 200, EditionStatus.Planned);
 
         var author = Author.CreateNew("test-author", "test-bibliography");
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [existingBookEdition], [author]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [existingBookEdition], [author.Id]);
         var action = () => book.AddEdition(editionToAdd);
 
         action.Should().Throw<InvalidBookException>().Where(x => x.Message.Equals("A book cannot editions with duplicate ISBN."));
@@ -92,7 +92,7 @@ public class BookTests
         var editionId = EditionId.CreateNew();
         var statusToUpdateTo = EditionStatus.Published;
         var bookEdition = Edition.CreateNew(editionId, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 1000, 200, EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [Author.CreateNew("test-author", "test-bibliography")]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [AuthorId.CreateNew()]);
 
         book.SetEditionStatus(editionId, statusToUpdateTo);
 
@@ -105,7 +105,7 @@ public class BookTests
         var priceToUpdateTo = 1000;
         var editionId = EditionId.CreateNew();
         var bookEdition = Edition.CreateNew(editionId, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [Author.CreateNew("test-author", "test-bibliography")]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [AuthorId.CreateNew()]);
 
         book.UpdatePrice(editionId, priceToUpdateTo);
 
@@ -118,7 +118,7 @@ public class BookTests
         var stockToUpdateTo = 1000;
         var editionId = EditionId.CreateNew();
         var bookEdition = Edition.CreateNew(editionId, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [Author.CreateNew("test-author", "test-bibliography")]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [AuthorId.CreateNew()]);
 
         book.UpdateStock(editionId, stockToUpdateTo);
 
@@ -129,7 +129,7 @@ public class BookTests
     public void AddGenre_ToBook_ShouldIncludeTheGenreInTheBookGenres()
     {
         var genreToAdd = GenreId.CreateNew();
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [Author.CreateNew("test-author", "test-bibliography")]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [AuthorId.CreateNew()]);
 
         book.AddGenre(genreToAdd);
 
@@ -140,7 +140,7 @@ public class BookTests
     public void AddGenre_ThatAlreadyExists_ShouldThrowAnInvalidBookException()
     {
         var genreToAdd = GenreId.CreateNew();
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [Author.CreateNew("test-author", "test-bibliography")]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [AuthorId.CreateNew()]);
         book.AddGenre(genreToAdd);
 
         var action = () => book.AddGenre(genreToAdd);
@@ -152,7 +152,7 @@ public class BookTests
     public void RemoveGenre_FromBook_ShouldRemoveTheGenreFromTheBookGenres()
     {
         var genreToRemove = GenreId.CreateNew();
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [Author.CreateNew("test-author", "test-bibliography")]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(EditionId.Empty, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned)], [AuthorId.CreateNew()]);
         book.AddGenre(genreToRemove);
 
         book.RemoveGenre(genreToRemove);
@@ -165,7 +165,7 @@ public class BookTests
     {
         var editionId = EditionId.CreateNew();
         var bookEdition = Edition.CreateNew(editionId, new("test-isbn1"), Format.AudioBook, "test-language3", new Dimensions(), 2000, 200, EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [Author.CreateNew("test-author", "test-bibliography")]);
+        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [AuthorId.CreateNew()]);
 
         book.RemoveEdition(editionId);
 
