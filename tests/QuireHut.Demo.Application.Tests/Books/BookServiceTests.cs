@@ -21,7 +21,7 @@ public class BookServiceTests
     [Fact]
     public async Task CreateBook_WithValidDTO_ShouldInvokeCreateBookCommand()
     {
-        var bookToBeCreated = _fixture.Create<BookCreationDTO>();
+        var bookToBeCreated = _fixture.Create<CreateBookDto>();
 
         await _bookService.CreateBook(bookToBeCreated);
 

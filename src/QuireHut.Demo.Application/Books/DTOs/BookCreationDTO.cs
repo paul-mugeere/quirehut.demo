@@ -1,6 +1,6 @@
 namespace QuireHut.Demo.Application;
 
-public record BookCreationDTO(
+public record CreateBookDto(
     string ISBN,
     string Title,
     string Subject,
@@ -9,11 +9,9 @@ public record BookCreationDTO(
     int NumberOfPages);
 
 
-public record BookItemCreationDTO(string ISBN);
-
-public static class BookCreationDTOMapper
+public static class CreateBookDtoMapper
 {
-    public static CreateBookCommand MapToCreateBookCommand(this BookCreationDTO book)
+    public static CreateBookCommand MapToCreateBookCommand(this CreateBookDto book)
     {
         return new CreateBookCommand(
             book.ISBN, 

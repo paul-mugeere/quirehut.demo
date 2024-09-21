@@ -2,5 +2,5 @@
 
 public interface IBookService
 {
-    public Task<Result<Guid>> CreateBook(BookCreationDTO book);
+    public Task<Result<Guid>> CreateBook(CreateBookDto book);
 }

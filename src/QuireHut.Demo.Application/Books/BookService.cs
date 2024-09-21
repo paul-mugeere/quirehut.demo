@@ -14,7 +14,7 @@ public class BookService : IBookService
     }
 
     //ToDo: shoult we return a valueObject instead?
-    public async Task<Result<Guid>> CreateBook(BookCreationDTO book)
+    public async Task<Result<Guid>> CreateBook(CreateBookDto book)
     {
         try
         {

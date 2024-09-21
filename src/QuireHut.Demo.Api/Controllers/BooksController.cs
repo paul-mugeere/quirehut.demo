@@ -1,11 +1,12 @@
 using QuireHut.Demo.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using QuireHut.Demo.Api.Contracts.Responses;
 
 namespace QuireHut.Demo.Api.Controllers;
 
 [ApiController]
-[Authorize]
+// [Authorize]
 [Route("api/books")]
 public class BooksController : ControllerBase
 {
@@ -17,9 +18,9 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("")]
-    public async Task<IActionResult> GetBooks()
+    public async Task<ActionResult<GetBooksResponse>> GetBooks()
     {
-        return Ok("Books..");
+        return Ok(LoremIpsum.BooksResponse);
     }
 
     [HttpGet("{bookId:Guid}")]
@@ -29,12 +30,12 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<IActionResult> CreateBook(BookCreateRequest book)
+    public async Task<IActionResult> CreateBook(CreateBookRequest book)
     {
         var result = await _bookService.CreateBook(book.MapToBookCreationDTO());
         if (result.IsSuccess)
         {
-            return CreatedAtAction(nameof(GetBooks), new BookCreateResponse(result.Value));
+            return CreatedAtAction(nameof(GetBooks), new CreateBookResponse(result.Value));
         }
 
         return StatusCode(500,"");

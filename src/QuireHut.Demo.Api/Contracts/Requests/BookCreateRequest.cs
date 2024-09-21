@@ -2,7 +2,7 @@ using QuireHut.Demo.Application;
 
 namespace QuireHut.Demo.Api.Controllers;
 
-public record BookCreateRequest(
+public record CreateBookRequest(
     string ISBN,
     string Title,
     string Subject,
@@ -13,9 +13,9 @@ public record BookCreateRequest(
 
 public static class BookCreationMapper
 {
-    public static BookCreationDTO MapToBookCreationDTO(this BookCreateRequest bookCreateRequest)
+    public static CreateBookDto MapToBookCreationDTO(this CreateBookRequest bookCreateRequest)
     {
-        return new BookCreationDTO(
+        return new CreateBookDto(
             bookCreateRequest.ISBN,
             bookCreateRequest.Title,
             bookCreateRequest.Subject,
