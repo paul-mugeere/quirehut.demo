@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +10,10 @@ public static class IServiceCollectionExtensions
     {
         return services.AddDbContextFactory<LibraryDemoDbContext>(options =>
         {
-            options.UseNpgsql(connectionString, npsqlOptions => npsqlOptions.MigrationsAssembly(typeof(LibraryDemoDbContext).Assembly.GetName().Name));
+            options.UseNpgsql(
+                connectionString, 
+                npsqlOptions => npsqlOptions.MigrationsAssembly(typeof(LibraryDemoDbContext).Assembly.GetName().Name))
+                .UseSnakeCaseNamingConvention();
         });
     }
 }

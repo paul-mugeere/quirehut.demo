@@ -1,5 +1,6 @@
 using QuireHut.Demo.Domain;
 
-public readonly record struct Publisher(string Name, Address Address, string Website, string Email){
+public readonly record struct Publisher(string Name, string Email, string Website){
     public static Publisher Empty{get;} = default;
+
 }

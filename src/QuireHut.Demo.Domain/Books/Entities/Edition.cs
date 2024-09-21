@@ -1,20 +1,20 @@
 
 using QuireHut.Demo.Domain;
 
-public record Edition
+public class Edition
 {
     public EditionId Id { get;} = EditionId.Empty;
-    public BookId BookId { get;}
+    public BookId BookId { get; private set;}
     public Book Book { get;}
-    public ISBN ISBN { get;} = ISBN.Empty; // should an edition have its own ISBN, some can!
-    public Format Format { get;}
-    public Dimensions Dimensions { get;} = Dimensions.Empty;
+    public ISBN ISBN { get; private set;} = ISBN.Empty; // should an edition have its own ISBN, some can!
+    public Format Format { get; private set;}
+    public Dimensions? Dimensions { get; private set;} 
     public decimal Price { get; private set; }
-    public int NumberOfPages { get;}
+    public int NumberOfPages { get; private set;}
     public int Stock { get; private set; }
-    public Publisher Publisher { get;} 
-    public DateTime? PublicationDate { get;}
-    public string Language { get;} = string.Empty;
+    public Publisher? Publisher { get;} 
+    public DateTime? PublicationDate { get; private set;}
+    public string Language { get; private set;} = string.Empty;
     public EditionStatus Status{get; private set;}
 
     public void UpdatePrice(decimal price) {

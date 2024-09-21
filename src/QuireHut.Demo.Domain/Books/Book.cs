@@ -3,19 +3,19 @@ using QuireHut.Demo.Domain.Books.Exceptions;
 
 namespace QuireHut.Demo.Domain;
 
-public record Book
+public class Book
 {
     public BookId Id { get; } = BookId.Empty;
     public Title Title { get; } = Title.Empty;
     public Subject Subject { get; } = Subject.Empty;
 
-    private List<GenreId> _genreIds { get; } = []; 
-    public IReadOnlyList<GenreId> GenreIds => _genreIds.AsReadOnly();
+    private List<GenreId>? _genreIds { get; set; } 
+    public IReadOnlyList<GenreId> GenreIds => _genreIds?.AsReadOnly() ?? new List<GenreId>().AsReadOnly();
 
-    private List<Edition> _editions { get; } = [];
+    private List<Edition> _editions { get; set; } 
     public IReadOnlyList<Edition> Editions => _editions.AsReadOnly();
 
-    private List<AuthorId> _authorIds { get; } = [];
+    private List<AuthorId> _authorIds { get; } 
     public IReadOnlyList<AuthorId> AuthorIds => _authorIds.AsReadOnly();
 
     public void AddEdition(Edition edition)
@@ -49,12 +49,14 @@ public record Book
 
     public void AddGenre(GenreId genreId)
     {
+        _genreIds ??= [];
         _genreIds.Add(genreId);
         EnsureInvariants();
     }
 
     public void RemoveGenre(GenreId genreId)
     {
+        _genreIds ??= [];
         if (_genreIds.Contains(genreId))
             _genreIds.RemoveAll(id => id == genreId);
     }
@@ -95,7 +97,7 @@ public record Book
 
     private bool HasDuplicateEditions()
     {
-        return _editions.Count() != _editions.DistinctBy(x => x.ISBN).Count();
+        return _editions?.Count() != _editions?.DistinctBy(x => x.ISBN).Count();
     }
 
     private bool HasNoAuthors() => _authorIds.Count == 0;
@@ -103,11 +105,11 @@ public record Book
 
     private Edition TryGetEditionOfId(EditionId editionId)
     {
-        var editionsDictionary = _editions.ToDictionary(x => x.Id, x => x) ?? new Dictionary<EditionId, Edition>();
+        var editionsDictionary = _editions?.ToDictionary(x => x.Id, x => x) ?? new Dictionary<EditionId, Edition>();
         return editionsDictionary.TryGetValue(editionId, out var edition) ? edition : throw new InvalidOperationException("Edition not found");
     }
 
-    private bool HasDuplicateGenres() => _genreIds.Count() != _genreIds.Distinct().Count();
+    private bool HasDuplicateGenres() => _genreIds?.Count() != _genreIds?.Distinct().Count();
 
 
     // For serialization

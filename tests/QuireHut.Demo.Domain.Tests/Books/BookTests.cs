@@ -24,7 +24,7 @@ public class BookTests
         book.Subject.Should().Be(subject);
         book.AuthorIds.Should().Contain(author.Id);
         book.Editions.Should().NotBeEmpty();
-        book.Editions.Should().Contain(edition);
+        book.Editions.Should().Contain(x=>x.Id==edition.Id);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class BookTests
         var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [AuthorId.CreateNew()]);
         book.AddEdition(editionToAdd);
 
-        book.Editions.Should().Contain(editionToAdd);
+        book.Editions.Should().Contain(x=>x.Id==editionToAdd.Id);
     }
 
 
@@ -169,6 +169,6 @@ public class BookTests
 
         book.RemoveEdition(editionId);
 
-        book.Editions.Should().NotContain(bookEdition);
+        book.Editions.Should().NotContain(x=>x.Id==bookEdition.Id);
     }
 }

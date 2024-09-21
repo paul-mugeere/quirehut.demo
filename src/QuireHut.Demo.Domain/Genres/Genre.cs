@@ -1,7 +1,7 @@
 
 namespace QuireHut.Demo.Domain;
 
-public record Genre
+public class Genre
 {
 
     public GenreId Id { get; private set; } = GenreId.Empty;

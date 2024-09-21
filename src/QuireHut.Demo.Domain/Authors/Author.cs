@@ -1,6 +1,6 @@
 using QuireHut.Demo.Domain;
 
-public record Author{
+public class Author{
     public AuthorId Id { get; private set; } = AuthorId.Empty;
     public string Name { get; private set; } = string.Empty;
     public string Bibliography { get; private set; } = string.Empty;
