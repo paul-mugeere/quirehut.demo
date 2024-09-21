@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: libraray.demo.postgres
+    container_name: quire.demo.postgres
     image: postgres:latest
     environment:
       - POSTGRES_USER=${POSTGRES_USER}

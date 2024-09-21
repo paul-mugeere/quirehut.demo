@@ -5,16 +5,18 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using QuireHut.Demo.Api.Extensions;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace QuireHut.Demo.Api;
 
 public static class IServiceCollectionExtensions
 {
-    public static IServiceCollection RegisterServices(this IServiceCollection services)
+    public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddMediatR();
         services.AddApplicationServices();
-        services.AddSwaggerDocs();
+        services.AddSwaggerDocs(configuration);
         return services;
     }
 
@@ -26,22 +28,23 @@ public static class IServiceCollectionExtensions
 
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAuthentication(options => {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(jwtBearerOpt =>{
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(jwtBearerOpt =>
+        {
             jwtBearerOpt.Audience = configuration["Auth:Audience"];
-            jwtBearerOpt.Authority = configuration["Auth:Endpoint"];
-            jwtBearerOpt.RequireHttpsMetadata = false; //only for development purpose
+            jwtBearerOpt.Authority = configuration["Auth:AuthEndpoint"];
+            jwtBearerOpt.MetadataAddress = configuration["Auth:MetadataAddress"];
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                jwtBearerOpt.RequireHttpsMetadata = false; //only for development purpose
+
             jwtBearerOpt.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                // ValidIssuer = configuration["Auth:Issuer"],
-                // ValidAudience = configuration["Auth:Audience"],
-                // IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Auth:SigningKey"])),
+                ValidIssuer = configuration["Auth:Issuer"],
+                ValidAudience = configuration["Auth:Audience"],
+                ValidateAudience = true, 
+                ValidateIssuer = true
+               
             };
         });
         return services;
@@ -61,27 +64,21 @@ public static class IServiceCollectionExtensions
         });
     }
 
-    private static void AddSwaggerDocs(this IServiceCollection services)
+    private static void AddSwaggerDocs(this IServiceCollection services, IConfiguration configuration)
     {
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         // services.AddEndpointsApiExplorer(); // Not using minimal apis
-        services.AddSwaggerGen(options =>
+        services.AddSwaggerGen(SwaggerGenConfig(configuration));
+    }
+
+    //ToDo: Move to SwaggerExtensinos
+    private static Action<SwaggerGenOptions> SwaggerGenConfig(IConfiguration configuration)
+    {
+        return options =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Version = "v1",
-                Title = "Library Api",
-                Description = "An API for the library app",
-            });
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description = "JWT Authorization header using the Bearer scheme.",
-            });
-        });
+            options.AddSwaggerDocs();
+            options.AddSecurityBearerRequirement("Bearer",configuration);
+            options.AddOauth2SecurityRequirement("oauth2",configuration);
+        };
     }
 }

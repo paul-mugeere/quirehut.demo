@@ -5,8 +5,8 @@ using QuireHut.Demo.Api.Contracts.Responses;
 
 namespace QuireHut.Demo.Api.Controllers;
 
+[Authorize]
 [ApiController]
-// [Authorize]
 [Route("api/books")]
 public class BooksController : ControllerBase
 {
@@ -38,6 +38,6 @@ public class BooksController : ControllerBase
             return CreatedAtAction(nameof(GetBooks), new CreateBookResponse(result.Value));
         }
 
-        return StatusCode(500,"");
+        return StatusCode(500, "");
     }
 }
