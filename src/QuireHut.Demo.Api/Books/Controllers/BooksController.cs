@@ -2,8 +2,9 @@ using QuireHut.Demo.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuireHut.Demo.Api.Contracts.Responses;
+using QuireHut.Demo.Api.Controllers;
 
-namespace QuireHut.Demo.Api.Controllers;
+namespace QuireHut.Demo.Api.Books.Controllers;
 
 [Authorize]
 [ApiController]

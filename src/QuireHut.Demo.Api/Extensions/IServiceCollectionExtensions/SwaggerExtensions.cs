@@ -1,11 +1,46 @@
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace QuireHut.Demo.Api.Extensions
+namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions
 {
-    public static class SwaggerExtensions
+    internal static class SwaggerExtensions
     {
-        public static void AddSwaggerDocs(this SwaggerGenOptions options)
+        internal static void AddSwaggerDocs(this IServiceCollection services, AuthenticationOptions authenticationOptions)
+        {
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // services.AddEndpointsApiExplorer(); // Not using minimal apis
+            services.AddSwaggerGen(SwaggerGenConfig(authenticationOptions));
+        }
+
+        internal static WebApplication UseSwaggerDocs(this WebApplication app)
+        {
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
+                });
+            }
+            return app;
+        }
+
+        private static Action<SwaggerGenOptions> SwaggerGenConfig(AuthenticationOptions authenticationOptions)
+        {
+            return options =>
+            {
+                options.AddSwaggerDocs();
+                options.AddSecurityBearerRequirement("Bearer");
+                options.AddOauth2SecurityRequirement("oauth2", authenticationOptions.Schemes.Bearer.AuthEndpoint);
+                options.TagActionsBy(c=>{
+                    return new List<string> { c.HttpMethod};
+                });
+            };
+        }
+
+        private static void AddSwaggerDocs(this SwaggerGenOptions options)
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
@@ -15,7 +50,7 @@ namespace QuireHut.Demo.Api.Extensions
             });
         }
 
-        public static void AddSecurityBearerRequirement(this SwaggerGenOptions options, string securityDefinitionId, IConfiguration configuration)
+        private static void AddSecurityBearerRequirement(this SwaggerGenOptions options, string securityDefinitionId)
         {
             options.AddSecurityDefinition(securityDefinitionId, new OpenApiSecurityScheme
             {
@@ -29,7 +64,7 @@ namespace QuireHut.Demo.Api.Extensions
             options.AddSecurityRequirementOfSecurityDefinitionId(securityDefinitionId);
         }
 
-        public static void AddOauth2SecurityRequirement(this SwaggerGenOptions options, string securityDefinitionId, IConfiguration configuration)
+        private static void AddOauth2SecurityRequirement(this SwaggerGenOptions options, string securityDefinitionId, string authUrl)
         {
             options.AddSecurityDefinition(securityDefinitionId, new OpenApiSecurityScheme
             {
@@ -38,10 +73,10 @@ namespace QuireHut.Demo.Api.Extensions
                 {
                     Implicit = new OpenApiOAuthFlow
                     {
-                        AuthorizationUrl = new Uri(configuration["Auth:AuthEndpoint"]),
+                        AuthorizationUrl = new Uri(authUrl),
                         Scopes = new Dictionary<string, string>
                         {
-                            { "api", "Access to the API" }
+                            { "api_access", "Access to the API" }
                         }
                     }
                 },
@@ -51,21 +86,6 @@ namespace QuireHut.Demo.Api.Extensions
             });
 
             options.AddSecurityRequirementOfSecurityDefinitionId(securityDefinitionId);
-        }
-
-
-        public static WebApplication UseSwaggerDocs(this WebApplication app)
-        {
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                    options.RoutePrefix = string.Empty;
-                });
-            }
-            return app;
         }
 
         private static void AddSecurityRequirementOfSecurityDefinitionId(this SwaggerGenOptions options, string securityDefinitionId)
@@ -81,7 +101,7 @@ namespace QuireHut.Demo.Api.Extensions
                             Id = securityDefinitionId
                         }
                     },
-                    new string[] { "api" }
+                    new string[] { "api_access" }
                 }
             });
         }
