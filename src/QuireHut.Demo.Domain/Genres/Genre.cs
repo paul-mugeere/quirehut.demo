@@ -1,5 +1,7 @@
 
-namespace QuireHut.Demo.Domain;
+using QuireHut.Demo.Domain.Genres.ValueObjects;
+
+namespace QuireHut.Demo.Domain.Genres;
 
 public class Genre
 {

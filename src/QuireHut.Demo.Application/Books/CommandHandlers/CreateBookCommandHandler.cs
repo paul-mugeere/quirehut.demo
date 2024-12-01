@@ -1,9 +1,11 @@
-using QuireHut.Demo.Domain;
 using MediatR;
+using QuireHut.Demo.Application.Books.Commands;
+using QuireHut.Demo.Application.Common;
+using QuireHut.Demo.Domain.Books.Repositories;
 
-namespace QuireHut.Demo.Application;
+namespace QuireHut.Demo.Application.Books.CommandHandlers;
 
-public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookId>
+public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Result<Guid>>
 {
     private readonly IBookRepository _bookRepository;
 
@@ -12,8 +14,16 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookI
         _bookRepository = bookRepository;
     }
 
-    public async Task<BookId> Handle(CreateBookCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateBookCommand command, CancellationToken cancellationToken)
     {
-        return await _bookRepository.Save(command.MapToBook());;
+        try
+        {
+            var bookCreationResult = await _bookRepository.SaveAsync(command.MapToBook());
+            return Result<Guid>.Success(bookCreationResult.Value);
+        }
+        catch (Exception e)
+        {
+            return Result<Guid>.FromException(e);
+        }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using QuireHut.Demo.Infrastructure;
+using QuireHut.Demo.Infrastructure.Persistence;
 
 #nullable disable
 
@@ -22,7 +22,7 @@ namespace QuireHut.Demo.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("QuireHut.Demo.Domain.Book", b =>
+            modelBuilder.Entity("QuireHut.Demo.Domain.Books.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -38,23 +38,133 @@ namespace QuireHut.Demo.Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.Property<string>("_authorIds")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("authors");
-
-                    b.Property<string>("_genreIds")
-                        .HasColumnType("jsonb")
-                        .HasColumnName("genres");
-
                     b.HasKey("Id")
                         .HasName("pk_books");
 
                     b.ToTable("Books", (string)null);
                 });
 
-            modelBuilder.Entity("QuireHut.Demo.Domain.Book", b =>
+            modelBuilder.Entity("QuireHut.Demo.Domain.Genres.Genre", b =>
                 {
-                    b.OwnsMany("Edition", "Editions", b1 =>
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_genres");
+
+                    b.ToTable("Genres", (string)null);
+                });
+
+            modelBuilder.Entity("QuireHut.Demo.Domain.Persons.Person", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Fullname")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("fullname");
+
+                    b.HasKey("Id")
+                        .HasName("pk_persons");
+
+                    b.ToTable("persons", (string)null);
+                });
+
+            modelBuilder.Entity("QuireHut.Demo.Domain.Books.Book", b =>
+                {
+                    b.OwnsMany("QuireHut.Demo.Domain.Books.Entities.BookAuthor", "Authors", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<Guid>("BookId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("book_id");
+
+                            b1.Property<Guid>("PersonId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("person_id");
+
+                            b1.HasKey("Id")
+                                .HasName("pk_authors");
+
+                            b1.HasIndex("BookId")
+                                .HasDatabaseName("ix_authors_book_id");
+
+                            b1.HasIndex("PersonId")
+                                .HasDatabaseName("ix_authors_person_id");
+
+                            b1.ToTable("Authors", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("BookId")
+                                .HasConstraintName("fk_authors_books_book_id");
+
+                            b1.HasOne("QuireHut.Demo.Domain.Persons.Person", "Person")
+                                .WithMany()
+                                .HasForeignKey("PersonId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired()
+                                .HasConstraintName("fk_authors_persons_person_id");
+
+                            b1.Navigation("Person");
+                        });
+
+                    b.OwnsMany("QuireHut.Demo.Domain.Books.Entities.BookGenre", "Genres", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<Guid>("BookId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("book_id");
+
+                            b1.Property<Guid>("GenreId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("genre_id");
+
+                            b1.HasKey("Id")
+                                .HasName("pk_book_genres");
+
+                            b1.HasIndex("BookId")
+                                .HasDatabaseName("ix_book_genres_book_id");
+
+                            b1.HasIndex("GenreId")
+                                .HasDatabaseName("ix_book_genres_genre_id");
+
+                            b1.ToTable("BookGenres", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("BookId")
+                                .HasConstraintName("fk_book_genres_books_book_id");
+
+                            b1.HasOne("QuireHut.Demo.Domain.Genres.Genre", "Genre")
+                                .WithMany()
+                                .HasForeignKey("GenreId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired()
+                                .HasConstraintName("fk_book_genres_genres_genre_id");
+
+                            b1.Navigation("Genre");
+                        });
+
+                    b.OwnsMany("QuireHut.Demo.Domain.Books.Entities.Edition", "Editions", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -119,7 +229,11 @@ namespace QuireHut.Demo.Infrastructure.Persistence.Migrations
                                 .HasConstraintName("fk_editions_books_book_id");
                         });
 
+                    b.Navigation("Authors");
+
                     b.Navigation("Editions");
+
+                    b.Navigation("Genres");
                 });
 #pragma warning restore 612, 618
         }

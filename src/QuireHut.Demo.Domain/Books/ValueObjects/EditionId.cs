@@ -1,3 +1,5 @@
+namespace QuireHut.Demo.Domain.Books.ValueObjects;
+
 public readonly record struct EditionId(Guid Value)
 {
     public static EditionId Empty { get; } = default;

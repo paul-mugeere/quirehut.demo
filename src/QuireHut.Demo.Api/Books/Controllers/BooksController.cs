@@ -1,44 +1,53 @@
-using QuireHut.Demo.Application;
-using Microsoft.AspNetCore.Authorization;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using QuireHut.Demo.Api.Contracts.Responses;
-using QuireHut.Demo.Api.Controllers;
+using QuireHut.Demo.Api.Books.Requests;
+using QuireHut.Demo.Api.Books.Responses;
+using QuireHut.Demo.Application.Books.Queries;
+using QuireHut.Demo.Domain.Books.ValueObjects;
 
 namespace QuireHut.Demo.Api.Books.Controllers;
 
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/books")]
 public class BooksController : ControllerBase
 {
-    private readonly IBookService _bookService;
+    private readonly IMediator _mediator;
 
-    public BooksController(IBookService bookService)
+    public BooksController(IMediator mediator)
     {
-        _bookService = bookService;
-    }
-
-    [HttpGet("")]
-    public async Task<ActionResult<GetBooksResponse>> GetBooks()
-    {
-        return Ok(LoremIpsum.BooksResponse);
-    }
-
-    [HttpGet("{bookId:Guid}")]
-    public async Task<IActionResult> GetBooks(Guid bookId)
-    {
-        return Ok("Books..");
+        _mediator = mediator;
     }
 
     [HttpPost("")]
-    public async Task<IActionResult> CreateBook(CreateBookRequest book)
+    public async Task<ActionResult<CreateBookResponse>> CreateBook(CreateBookRequest book)
     {
-        var result = await _bookService.CreateBook(book.MapToBookCreationDTO());
-        if (result.IsSuccess)
+        var result = await _mediator.Send(book.MapToCreateBookCommand());
+        return result.IsSuccess
+            ? CreatedAtAction(nameof(GetBooks),new {bookId=result.Data}, new CreateBookResponse(result.Data))
+            : StatusCode(500, result.Error);
+    }
+    
+    [HttpGet("")]
+    public async Task<ActionResult<GetBooksResponse>> GetBooks()
+    {
+        var result = await _mediator.Send(new GetBooksQuery());
+        var booksResponse = new GetBooksResponse
         {
-            return CreatedAtAction(nameof(GetBooks), new CreateBookResponse(result.Value));
-        }
+            Books = result.Data?.Books ?? []
+        };
+        
+        return result.IsSuccess
+            ? Ok(booksResponse)
+            : StatusCode(500, result.Error);
+    }
 
-        return StatusCode(500, "");
+    [HttpGet("{bookId}")]
+    public async Task<ActionResult<GetBookDetailsResponse>> GetBooks(Guid bookId, [FromQuery] Guid editionId)
+    {
+        var result = await _mediator.Send(new GetBookEditionQuery(new BookId(bookId), new EditionId(editionId)));
+        return result.IsSuccess
+            ? Ok(result.Data)
+            : StatusCode(500, result.Error);
     }
 }

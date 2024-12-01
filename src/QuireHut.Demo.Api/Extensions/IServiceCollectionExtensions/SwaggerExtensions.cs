@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
+using QuireHut.Demo.Api.Configurations;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions

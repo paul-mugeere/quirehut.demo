@@ -1,5 +1,5 @@
 
-namespace QuireHut.Demo.Domain;
+namespace QuireHut.Demo.Domain.Genres.ValueObjects;
 
 public readonly record struct GenreId(Guid Value)
 {

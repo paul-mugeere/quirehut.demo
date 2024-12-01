@@ -1,4 +1,4 @@
-namespace QuireHut.Demo.Domain;
+namespace QuireHut.Demo.Domain.Books.Enums;
 
 public enum Format
 {

@@ -1,13 +1,15 @@
+using QuireHut.Demo.Domain.Books.Enums;
+using QuireHut.Demo.Domain.Books.ValueObjects;
 
-using QuireHut.Demo.Domain;
+namespace QuireHut.Demo.Domain.Books.Entities;
 
 public class Edition
 {
     public EditionId Id { get;} = EditionId.Empty;
-    public BookId BookId { get; private set;}
+    public BookId BookId { get;}
     public Book Book { get;}
-    public ISBN ISBN { get; private set;} = ISBN.Empty; // should an edition have its own ISBN, some can!
-    public Format Format { get; private set;}
+    public ISBN ISBN { get;} = ISBN.Empty; // should an edition have its own ISBN, some can!
+    public Format Format { get; private set; }
     public Dimensions? Dimensions { get; private set;} 
     public decimal Price { get; private set; }
     public int NumberOfPages { get; private set;}
@@ -19,11 +21,11 @@ public class Edition
 
     public void UpdatePrice(decimal price) {
         Price = price;
-     }
+    }
 
     public void UpdateStock(int stock) {
         Stock = stock;
-     }
+    }
 
     public void AssignFormat(Format format) { }
 
@@ -31,37 +33,43 @@ public class Edition
 
     public void UpdateStatus(EditionStatus status) {
         Status = status;
-     }
+    }
 
     public static Edition CreateNew(
-        EditionId id,
         ISBN isbn,
         Format format, 
         string language,
+        Publisher publisher,
+        DateTime? publicationDate,
         Dimensions dimensions,
         decimal price, 
         int numberOfPages,
         EditionStatus status)
     {
-        return new(id,isbn,format,language,dimensions,numberOfPages,status);
+        return new(isbn,format,price,language,publisher,publicationDate,dimensions,numberOfPages,status);
     }
 
     private  Edition(
-        EditionId id,
         ISBN isbn,
         Format format,
+        decimal price,
         string language,
+        Publisher publisher,
+        DateTime? publicationDate,
         Dimensions dimensions,
         int numberOfPages,
         EditionStatus status)
     {
-            Id = id;
-            ISBN = isbn;
-            Format = format;
-            Language = language;
-            Dimensions = dimensions;
-            NumberOfPages = numberOfPages;
-            Status = status;
+        Id = EditionId.CreateNew();
+        ISBN = isbn;
+        Format = format;
+        Language = language;
+        Publisher = publisher;
+        PublicationDate = publicationDate;
+        Dimensions = dimensions;
+        NumberOfPages = numberOfPages;
+        Status = status;
+        Price = price;
     }
     private Edition() { }
 }

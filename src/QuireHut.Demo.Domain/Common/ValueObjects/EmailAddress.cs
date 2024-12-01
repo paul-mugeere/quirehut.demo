@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
+using QuireHut.Demo.Domain.Common.Exceptions;
 
-namespace QuireHut.Demo.Domain;
+namespace QuireHut.Demo.Domain.Common.ValueObjects;
 
 public readonly record struct EmailAddress
 {

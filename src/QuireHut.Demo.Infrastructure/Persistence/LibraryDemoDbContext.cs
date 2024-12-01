@@ -1,7 +1,8 @@
-﻿using QuireHut.Demo.Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using QuireHut.Demo.Domain.Books;
+using QuireHut.Demo.Domain.Persons;
 
-namespace QuireHut.Demo.Infrastructure;
+namespace QuireHut.Demo.Infrastructure.Persistence;
 
 public class LibraryDemoDbContext : DbContext
 {
@@ -13,4 +14,7 @@ public class LibraryDemoDbContext : DbContext
     {
        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LibraryDemoDbContext).Assembly);
     }
+    
+    public DbSet<Book> Books { get; init; }
+    public DbSet<Person> Persons { get; init; }
 }

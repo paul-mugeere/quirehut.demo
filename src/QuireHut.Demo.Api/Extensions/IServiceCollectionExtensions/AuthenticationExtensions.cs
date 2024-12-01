@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using QuireHut.Demo.Api.Configurations;
 
 namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions;
 

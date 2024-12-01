@@ -1,7 +1,11 @@
-﻿
+﻿using QuireHut.Demo.Domain.Books.Entities;
+using QuireHut.Demo.Domain.Books.Enums;
 using QuireHut.Demo.Domain.Books.Exceptions;
+using QuireHut.Demo.Domain.Books.ValueObjects;
+using QuireHut.Demo.Domain.Genres.ValueObjects;
+using QuireHut.Demo.Domain.Persons.ValueObjects;
 
-namespace QuireHut.Demo.Domain;
+namespace QuireHut.Demo.Domain.Books;
 
 public class Book
 {
@@ -9,14 +13,14 @@ public class Book
     public Title Title { get; } = Title.Empty;
     public Subject Subject { get; } = Subject.Empty;
 
-    private List<GenreId>? _genreIds { get; set; } 
-    public IReadOnlyList<GenreId> GenreIds => _genreIds?.AsReadOnly() ?? new List<GenreId>().AsReadOnly();
-
-    private List<Edition> _editions { get; set; } 
+    private readonly List<BookGenre> _genres  = new();
+    public IReadOnlyList<BookGenre> Genres => _genres.AsReadOnly();
+    
+    private readonly List<Edition> _editions  = new();
     public IReadOnlyList<Edition> Editions => _editions.AsReadOnly();
-
-    private List<AuthorId> _authorIds { get; } 
-    public IReadOnlyList<AuthorId> AuthorIds => _authorIds.AsReadOnly();
+    
+    private readonly List<BookAuthor> _authors  = new ();
+    public IReadOnlyList<BookAuthor> Authors => _authors.AsReadOnly();
 
     public void AddEdition(Edition edition)
     {
@@ -49,36 +53,34 @@ public class Book
 
     public void AddGenre(GenreId genreId)
     {
-        _genreIds ??= [];
-        _genreIds.Add(genreId);
+        _genres.Add(BookGenre.CreateNew(Id,genreId));
         EnsureInvariants();
     }
 
     public void RemoveGenre(GenreId genreId)
     {
-        _genreIds ??= [];
-        if (_genreIds.Contains(genreId))
-            _genreIds.RemoveAll(id => id == genreId);
+        if (ContainsGenre(genreId))
+            _genres.RemoveAll(id => id.GenreId == genreId);
     }
 
     public static Book CreateNew(
         Title title,
         Subject subject,
         List<Edition> editions,
-        List<AuthorId> authors) =>
+        List<PersonId> authors) =>
         new(title, subject, editions, authors);
 
     private Book(
     Title title,
     Subject subject,
-    List<Edition> editions,
-    List<AuthorId> authors)
+    List<Edition> editionsCollection,
+    List<PersonId> authors)
     {
         Id = BookId.CreateNew();
         Title = title;
         Subject = subject;
-        _authorIds = authors;
-        _editions = editions;
+        _authors = authors?.Select(x=> BookAuthor.CreateNew(Id, x)).ToList()??[];
+        _editions = editionsCollection;
 
         EnsureInvariants();
     }
@@ -95,22 +97,27 @@ public class Book
             throw new InvalidBookException("A book cannot have duplicate genres.");
     }
 
+    private bool HasDuplicateGenres() =>
+        _genres.Count > _genres.DistinctBy(x => x.GenreId).Count();
+
     private bool HasDuplicateEditions()
     {
-        return _editions?.Count() != _editions?.DistinctBy(x => x.ISBN).Count();
+        return _editions.Count() != _editions.DistinctBy(x => x.ISBN).Count();
     }
 
-    private bool HasNoAuthors() => _authorIds.Count == 0;
+    private bool HasNoAuthors() => _authors.Count == 0;
     private bool HasNoEditions() => _editions.Count == 0;
 
     private Edition TryGetEditionOfId(EditionId editionId)
     {
-        var editionsDictionary = _editions?.ToDictionary(x => x.Id, x => x) ?? new Dictionary<EditionId, Edition>();
+        var editionsDictionary = _editions.ToDictionary(x => x.Id, x => x);
         return editionsDictionary.TryGetValue(editionId, out var edition) ? edition : throw new InvalidOperationException("Edition not found");
     }
-
-    private bool HasDuplicateGenres() => _genreIds?.Count() != _genreIds?.Distinct().Count();
-
+    
+    private bool ContainsGenre(GenreId genreId)
+    {
+        return _genres.Any(bookGenre => bookGenre.GenreId == genreId);
+    }
 
     // For serialization
     private Book() { }

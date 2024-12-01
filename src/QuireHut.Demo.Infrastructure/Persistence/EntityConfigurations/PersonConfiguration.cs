@@ -1,26 +1,25 @@
-﻿using QuireHut.Demo.Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using QuireHut.Demo.Domain.Persons;
+using QuireHut.Demo.Domain.Persons.ValueObjects;
 
-namespace QuireHut.Demo.Infrastructure;
+namespace QuireHut.Demo.Infrastructure.Persistence.EntityConfigurations;
 
-// public class PersonConfiguration : IEntityTypeConfiguration<Person>
-// {
-//     public void Configure(EntityTypeBuilder<Person> modelBuilder)
-//     {
-//         modelBuilder.ToTable("persons");
+public class PersonConfiguration : IEntityTypeConfiguration<Person>
+{
+    public void Configure(EntityTypeBuilder<Person> modelBuilder)
+    {
+        modelBuilder.ToTable("persons");
 
-//         modelBuilder
-//         .HasKey(person => person.Id);
+        modelBuilder
+        .HasKey(person => person.Id);
 
-//         modelBuilder
-//         .Property(person => person.Id)
-//         .HasConversion(id => id.Value, value => new(value));
+        modelBuilder
+        .Property(person => person.Id)
+        .HasConversion(id => id.Value, value => new(value));
+        
+        modelBuilder.Property(person =>person.Fullname)
+            .HasConversion(x=>x.ToString(),value=>Fullname.FromString(value));
 
-//         modelBuilder
-//         .Property(person => person.Email)
-//         .HasConversion(id => id.Value, value => new(value));
-
-//         modelBuilder.HasMany(person => person.Addresses).WithOne(x=>x.Person).HasForeignKey(x=>x.PersonId);
-//     }
-// }
+    }
+}

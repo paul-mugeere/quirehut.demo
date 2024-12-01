@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Books/CommandHandlers/" />
-    <Folder Include="Books/Queries/" />
   </ItemGroup>
 
   <ItemGroup>

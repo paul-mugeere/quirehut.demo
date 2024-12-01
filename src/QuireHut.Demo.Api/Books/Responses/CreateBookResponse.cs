@@ -1,2 +1,2 @@
-namespace QuireHut.Demo.Api.Controllers;
+namespace QuireHut.Demo.Api.Books.Responses;
 public record CreateBookResponse(Guid BookId);

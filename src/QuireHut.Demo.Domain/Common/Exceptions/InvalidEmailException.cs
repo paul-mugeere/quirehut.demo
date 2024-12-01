@@ -1,4 +1,4 @@
-﻿namespace QuireHut.Demo.Domain;
+﻿namespace QuireHut.Demo.Domain.Common.Exceptions;
 
 public class InvalidEmailException : Exception
 {

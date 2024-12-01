@@ -1,19 +1,19 @@
-﻿namespace QuireHut.Demo.Application;
+﻿namespace QuireHut.Demo.Application.Common;
 
-public record Result<T>
+public class Result<T>
 {
     public bool IsSuccess { get; }
-    public T? Value { get; } = default;
+    public T? Data { get; } = default;
     public string? Error { get; }
 
-    private Result(bool isSuccess, T value, string? error = "")
+    private Result(bool isSuccess, T data, string? error = "")
     {
         IsSuccess = isSuccess;
-        Value = value;
+        Data = data;
         Error = error;
     }
 
-    public static Result<T> Success(T value) => new Result<T>(true, value);
+    public static Result<T> Success(T data) => new Result<T>(true, data);
 
     public static Result<T> Failure(string? error) => new Result<T>(false, default, error);
 

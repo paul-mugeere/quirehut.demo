@@ -23,4 +23,7 @@
     <ProjectReference Include="../QuireHut.Demo.Domain/QuireHut.Demo.Domain.csproj" />
     <ProjectReference Include="../QuireHut.Demo.Infrastructure/QuireHut.Demo.Infrastructure.csproj" />
   </ItemGroup>
+<ItemGroup>
+  <Folder Include="DemoData\" />
+</ItemGroup>
 </Project>
