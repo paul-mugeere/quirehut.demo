@@ -23,6 +23,7 @@ builder.Services.AddAuthorizationServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddDatabaseService(builder.Configuration);
 builder.Services.AddMediatR();
+builder.Services.AddAutoMapperProfiles();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

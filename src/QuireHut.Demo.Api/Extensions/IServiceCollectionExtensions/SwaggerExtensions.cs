@@ -14,7 +14,7 @@ namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions
             services.AddSwaggerGen(SwaggerGenConfig(authenticationOptions));
         }
 
-        internal static WebApplication UseSwaggerDocs(this WebApplication app)
+        internal static void UseSwaggerDocs(this WebApplication app)
         {
             if (app.Environment.IsDevelopment())
             {
@@ -25,7 +25,6 @@ namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions
                     options.RoutePrefix = string.Empty;
                 });
             }
-            return app;
         }
 
         private static Action<SwaggerGenOptions> SwaggerGenConfig(AuthenticationOptions authenticationOptions)

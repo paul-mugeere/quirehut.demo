@@ -9,12 +9,13 @@ using QuireHut.Demo.Domain.Persons.ValueObjects;
 
 namespace QuireHut.Demo.Application.Books.Commands;
 
-public record CreateBookCommand(
-    string Title,
-    string Subject,
-    List<EditionItemDetails> Editions,
-    List<Guid> AuthorIds) : IRequest<Result<Guid>>;
-
+public record CreateBookCommand : IRequest<Result<Guid>>
+{
+    public string Title { get; init; } = string.Empty;
+    public string Subject { get; init; } = string.Empty;
+    public List<Guid> AuthorIds { get; init; } 
+    public List<EditionDto> Editions { get; init; }
+}
 
 public static class CreateBookCommandMapper{
     public static Book MapToBook(this CreateBookCommand command){

@@ -9,6 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="10.0.0" />
     <PackageReference Include="MediatR" Version="12.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
@@ -24,6 +27,6 @@
     <ProjectReference Include="../QuireHut.Demo.Infrastructure/QuireHut.Demo.Infrastructure.csproj" />
   </ItemGroup>
 <ItemGroup>
-  <Folder Include="DemoData\" />
+  <Folder Include="Sales\Requests\" />
 </ItemGroup>
 </Project>

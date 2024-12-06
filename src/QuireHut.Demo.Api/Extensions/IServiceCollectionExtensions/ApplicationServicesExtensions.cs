@@ -1,9 +1,6 @@
-using QuireHut.Demo.Application;
-using QuireHut.Demo.Application.Books;
-using QuireHut.Demo.Domain;
+using QuireHut.Demo.Application.Books.Mappers;
 using QuireHut.Demo.Domain.Books.Repositories;
 using QuireHut.Demo.Domain.Persons.Repositories;
-using QuireHut.Demo.Infrastructure;
 using QuireHut.Demo.Infrastructure.Persistence.Repositories;
 
 namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions
@@ -14,6 +11,7 @@ namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions
         {
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<IPersonRepository, PersonRepository>();
+            services.AddTransient<IBookMappers, BookMappers>();
             return services;
         }
     }

@@ -1,4 +1,4 @@
-namespace QuireHut.Demo.Api.Books.Requests;
+namespace QuireHut.Demo.Api.Inventory.Requests;
 
 public class SearchBooksRequest
 {

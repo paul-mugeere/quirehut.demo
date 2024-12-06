@@ -1,10 +1,14 @@
 using AutoFixture;
+using AutoMapper;
 using FakeItEasy;
 using FluentAssertions;
+using QuireHut.Demo.Application.Books.DTOs.Books;
+using QuireHut.Demo.Application.Books.Mappers;
 using QuireHut.Demo.Application.Books.Queries;
 using QuireHut.Demo.Application.Books.QueryHandlers;
 using QuireHut.Demo.Domain.Books;
 using QuireHut.Demo.Domain.Books.Entities;
+using QuireHut.Demo.Domain.Books.Enums;
 using QuireHut.Demo.Domain.Books.Repositories;
 using QuireHut.Demo.Domain.Books.ValueObjects;
 using QuireHut.Demo.Domain.Persons;
@@ -19,15 +23,17 @@ public class BooksQueryHandlersTests
     private readonly IPersonRepository _personRepository;
     private readonly Fixture _fixture;
     private readonly GetBooksQueryHandler _handler;
-    private readonly GetBookEditionQueryHandler _editionQueryHandler;
+    private readonly GetBookDetailsQueryHandler _detailsQueryHandler;
+    private readonly IBookMappers _mappers;
 
     public BooksQueryHandlersTests()
     {
         _personRepository = A.Fake<IPersonRepository>();
         _bookRepository = A.Fake<IBookRepository>();
+        _mappers = A.Fake<IBookMappers>();
         _fixture = new Fixture();
-        _handler = new GetBooksQueryHandler(_bookRepository,_personRepository);
-        _editionQueryHandler = new GetBookEditionQueryHandler(_bookRepository,_personRepository);
+        _handler = new GetBooksQueryHandler(_bookRepository,_personRepository,_mappers);
+        _detailsQueryHandler = new GetBookDetailsQueryHandler(_bookRepository,_personRepository,_mappers);
     }
 
     [Fact]
@@ -48,7 +54,7 @@ public class BooksQueryHandlersTests
     }
 
     [Fact]
-    public async Task GivenNoBooks_HandleGetBookQuery_ShouldReturnResultWithNoBooks()
+    public async Task GivenNoBooks_HandleGetBooksQuery_ShouldReturnResultWithNoBooks()
     {
         A.CallTo(() => _bookRepository.GetAllAsync()).Returns([]);
         var authors = _fixture.Create<List<Person>>();
@@ -63,31 +69,24 @@ public class BooksQueryHandlersTests
     }
 
     [Fact]
-    public async Task GivenBooks_HandleGetBookEditionQuery_ShouldReturnBookEditionIfEditionExists()
+    public async Task GivenBooks_HandleGetBookDetailsQuery_ShouldReturnBookDetailsIfBookExists()
     {
+        var authors = _fixture.Create<List<Person>>();
+        A.CallTo(()=>_personRepository.GetPersonsAsync(A<IEnumerable<PersonId>>._)).Returns(authors);
+        
         var existingBook = _fixture.Create<Book>();
-        var existingBookEdition = _fixture.Create<Edition>();
-        existingBook.AddEdition(existingBookEdition);
         A.CallTo(()=>_bookRepository.GetByIdAsync(A<BookId>._)).Returns(existingBook);
+        A.CallTo(() => _mappers.MapToBookDetailsDto(A<Book>._, A<List<Person>>._)).Returns(new BookDetailsDto()
+        {
+            BookId = existingBook.Id.Value
+        });
+
+        var bookQuery = new GetBookDetailsQuery(existingBook.Id);
+        var result = await _detailsQueryHandler.Handle(bookQuery,CancellationToken.None);
         
-        var bookQuery = new GetBookEditionQuery(existingBook.Id,existingBookEdition.Id);
-        var result = await _editionQueryHandler.Handle(bookQuery,CancellationToken.None);
-        
+        A.CallTo(() => _mappers.MapToBookDetailsDto(A<Book>._, A<List<Person>>._)).MustHaveHappened();
         result.IsSuccess.Should().BeTrue();
-        result.Data?.Edition.EditionId.Should().Be(existingBookEdition.Id.Value);
         result.Data?.BookId.Should().Be(existingBook.Id.Value);
     }
 
-    [Fact]
-    public async Task GivenBooks_HandleGetBookEditionQuery_ShouldReturnBookEditionIfEditionDoesNotExists()
-    {
-        var existingBook = _fixture.Create<Book>();
-        var existingBookEdition = _fixture.Create<Edition>();
-        A.CallTo(()=>_bookRepository.GetByIdAsync(A<BookId>._)).Returns(existingBook);
-        
-        var bookQuery = new GetBookEditionQuery(existingBook.Id,existingBookEdition.Id);
-        var result = await _editionQueryHandler.Handle(bookQuery,CancellationToken.None);
-        
-        result.IsSuccess.Should().BeFalse();
-    }
 }

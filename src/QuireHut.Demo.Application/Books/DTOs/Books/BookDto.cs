@@ -2,26 +2,20 @@
 
 namespace QuireHut.Demo.Application.Books.DTOs.Books;
 
-public record BookItem
+public record BookDto
 {
     public Guid BookId { get; set; }
-    public Guid EditionId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string CoverImageUrl { get; set; } = string.Empty;
-    public string Language { get; set; } = string.Empty;
-    
-    public EditionItemFormat Format { get;  set;} 
-    public List<BookItemAuthor> Authors { get; set; } = new ();
-    public decimal Price { get;  set; }
-    public DateTime? PublicationDate { get;  set;}
+    public List<BookAuthorDto> Authors { get; set; } = new ();
+    public List<EditionDto> Editions { get; set; } = new();
 }
 
-public record BookItemAuthor
+public record BookAuthorDto
 {
+    public Guid Id { get; set; }
     public string Fullname { get; set; }
 }
-
-
 
 public enum EditionItemStatus
 {
@@ -30,8 +24,8 @@ public enum EditionItemStatus
     OutOfPrint =3,
     Discontinued =4
 }
-public record EditionItemPublisher(string? Name);
-public record EditionItemDimensions(decimal? Height, decimal? Width, decimal? Depth);
+public record PublisherDto(string? Name);
+public record DimensionsDto(decimal? Height, decimal? Width, decimal? Depth);
 public enum EditionItemFormat
 {
     HardPaper = 1,

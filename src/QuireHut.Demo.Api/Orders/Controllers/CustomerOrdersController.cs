@@ -1,9 +1,7 @@
-using System.ComponentModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
-namespace QuireHut.Demo.Api.Customers.Controllers;
+namespace QuireHut.Demo.Api.Orders.Controllers;
 
 [Authorize(Policy = "ManageCustomerOrder")]
 [Route("api/customers")]

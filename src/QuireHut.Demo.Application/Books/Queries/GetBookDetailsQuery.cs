@@ -5,4 +5,4 @@ using QuireHut.Demo.Domain.Books.ValueObjects;
 
 namespace QuireHut.Demo.Application.Books.Queries;
 
-public record GetBookEditionQuery(BookId BookId,EditionId EditionId):IRequest<Result<BookItemDetails>>;
+public record GetBookDetailsQuery(BookId BookId):IRequest<Result<BookDetailsDto>>;
