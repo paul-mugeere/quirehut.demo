@@ -1,10 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using QuireHut.Demo.Api.Inventory.Requests;
-using QuireHut.Demo.Api.Inventory.Responses;
 using QuireHut.Demo.Api.Sales.Responses;
-using QuireHut.Demo.Application.Books.Queries;
-using QuireHut.Demo.Domain.Books.ValueObjects;
 
 namespace QuireHut.Demo.Api.Sales.Controllers;
 

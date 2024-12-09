@@ -1,6 +1,6 @@
-namespace QuireHut.Demo.Api.Sales.Models;
+namespace QuireHut.Demo.Api.Models;
 
-public enum BookListingFormat
+public enum EditionFormat
 {
     HardPaper = 1,
     PaperBack = 2,

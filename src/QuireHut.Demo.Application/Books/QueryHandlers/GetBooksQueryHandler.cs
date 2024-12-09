@@ -1,11 +1,9 @@
-using AutoMapper;
 using MediatR;
 using QuireHut.Demo.Application.Books.DTOs.Books;
 using QuireHut.Demo.Application.Books.Mappers;
 using QuireHut.Demo.Application.Books.Queries;
 using QuireHut.Demo.Application.Common;
 using QuireHut.Demo.Domain.Books;
-using QuireHut.Demo.Domain.Books.Entities;
 using QuireHut.Demo.Domain.Books.Repositories;
 using QuireHut.Demo.Domain.Persons;
 using QuireHut.Demo.Domain.Persons.Repositories;
@@ -52,6 +50,4 @@ public class GetBooksQueryHandler: IRequestHandler<GetBooksQuery, Result<BookCol
             }).ToList()
         };
     }
-
-   
 }

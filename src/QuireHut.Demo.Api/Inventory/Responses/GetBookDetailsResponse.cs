@@ -1,4 +1,4 @@
-using QuireHut.Demo.Api.Inventory.Models;
+using QuireHut.Demo.Api.Models;
 
 namespace QuireHut.Demo.Api.Inventory.Responses;
 

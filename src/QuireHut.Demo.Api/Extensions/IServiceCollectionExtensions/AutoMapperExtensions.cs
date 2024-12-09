@@ -9,7 +9,7 @@ public static class AutoMapperExtensions
     {
         services.AddAutoMapper(cfg =>
         {
-            cfg.AddMaps(typeof(BookMappingProfile).Assembly);
+            cfg.AddMaps(typeof(BookDtoProfile).Assembly);
             cfg.AddMaps(typeof(Program).Assembly);
         });
         return services;

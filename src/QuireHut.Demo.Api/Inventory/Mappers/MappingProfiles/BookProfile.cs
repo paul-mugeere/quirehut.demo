@@ -1,6 +1,7 @@
 using AutoMapper;
-using QuireHut.Demo.Api.Inventory.Models;
 using QuireHut.Demo.Api.Inventory.Requests;
+using QuireHut.Demo.Api.Inventory.Responses;
+using QuireHut.Demo.Api.Models;
 using QuireHut.Demo.Application.Books.Commands;
 using QuireHut.Demo.Application.Books.DTOs.Books;
 

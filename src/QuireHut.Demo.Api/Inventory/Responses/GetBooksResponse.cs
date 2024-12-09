@@ -1,4 +1,4 @@
-using QuireHut.Demo.Api.Inventory.Models;
+using QuireHut.Demo.Api.Models;
 using QuireHut.Demo.Api.Shared;
 using QuireHut.Demo.Application.Books.DTOs.Books;
 

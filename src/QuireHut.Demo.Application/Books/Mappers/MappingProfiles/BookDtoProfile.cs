@@ -7,9 +7,9 @@ using QuireHut.Demo.Domain.Persons;
 
 namespace QuireHut.Demo.Application.Books.Mappers.MappingProfiles;
 
-public class BookMappingProfile:Profile
+public class BookDtoProfile:Profile
 {
-    public BookMappingProfile()
+    public BookDtoProfile()
     {
         CreateMap<Edition, EditionDto>()
             .ForMember(x=>x.EditionId, y=>y.MapFrom(x=>x.Id.Value))
