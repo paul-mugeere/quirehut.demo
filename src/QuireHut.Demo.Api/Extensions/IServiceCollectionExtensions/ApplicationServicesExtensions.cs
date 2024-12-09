@@ -11,7 +11,9 @@ namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions
         {
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<IPersonRepository, PersonRepository>();
-            services.AddTransient<IBookMappers, BookMappers>();
+            services.AddTransient<IBookMapper, BookMapper>();
+            services.AddTransient<IBookAuthorMapper, BookAuthorMapper>();
+            services.AddTransient<IBookTitleMapper, BookTitleMapper>();
             return services;
         }
     }

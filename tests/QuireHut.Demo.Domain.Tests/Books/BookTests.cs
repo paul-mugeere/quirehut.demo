@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using QuireHut.Demo.Domain;
 using QuireHut.Demo.Domain.Books;
 using QuireHut.Demo.Domain.Books.Entities;
 using QuireHut.Demo.Domain.Books.Enums;
@@ -9,7 +8,7 @@ using QuireHut.Demo.Domain.Genres.ValueObjects;
 using QuireHut.Demo.Domain.Persons;
 using QuireHut.Demo.Domain.Persons.ValueObjects;
 
-namespace QuireHut.Demo.Tests;
+namespace QuireHut.Demo.Domain.Tests.Books;
 public class BookTests
 {
 

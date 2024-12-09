@@ -1,6 +1,6 @@
 namespace QuireHut.Demo.Api.Models;
 
-public enum EditionStatus
+public enum Status
 {
     Planned =1,
     Published =2,

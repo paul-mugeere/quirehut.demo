@@ -21,7 +21,7 @@ public class BooksCommandHandlersTests
     }
 
     [Fact]
-    public async Task Handle_WithValidCommand_ShouldSaveBook(){
+    public async Task Handle_CreateBookCommand_ShouldSaveBook(){
         var createBookCommand = _fixture.Create<CreateBookCommand>();
         var bookId = _fixture.Create<BookId>();
         A.CallTo(() => _bookRepository.SaveAsync(A<Book>._)).Returns(bookId);

@@ -11,12 +11,6 @@ public record BookDto
     public List<EditionDto> Editions { get; set; } = new();
 }
 
-public record BookAuthorDto
-{
-    public Guid Id { get; set; }
-    public string Fullname { get; set; }
-}
-
 public enum EditionItemStatus
 {
     Planned =1,
@@ -26,10 +20,3 @@ public enum EditionItemStatus
 }
 public record PublisherDto(string? Name);
 public record DimensionsDto(decimal? Height, decimal? Width, decimal? Depth);
-public enum EditionItemFormat
-{
-    HardPaper = 1,
-    PaperBack = 2,
-    AudioBook = 3,
-    Ebook = 4
-}

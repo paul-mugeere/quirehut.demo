@@ -1,6 +1,6 @@
 namespace QuireHut.Demo.Api.Models;
 
-public enum EditionFormat
+public enum Format
 {
     HardPaper = 1,
     PaperBack = 2,

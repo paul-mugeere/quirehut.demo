@@ -15,12 +15,12 @@ public record CreateBookRequest(
 public record CreateEditionRequest
 {
     public string ISBN { get;  set;}
-    public EditionFormat Format { get;  set;}
+    public Format Format { get;  set;}
     public Dimensions? Dimensions { get;  set;} 
     public decimal Price { get;  set; }
     public int NumberOfPages { get; set;}
     public Publisher? Publisher { get; set; } 
     public DateTime? PublicationDate { get;  set;}
     public string Language { get;  set;} = string.Empty;
-    public EditionStatus Status{get; set;}
+    public Status Status{get; set;}
 }

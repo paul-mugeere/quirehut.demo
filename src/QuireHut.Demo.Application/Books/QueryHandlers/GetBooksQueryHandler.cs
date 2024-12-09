@@ -14,13 +14,15 @@ public class GetBooksQueryHandler: IRequestHandler<GetBooksQuery, Result<BookCol
 {
     private readonly IBookRepository _bookRepository;
     private readonly IPersonRepository _personRepository;
-    private readonly IBookMappers _mappers;
+    private readonly IBookMapper _mapper;
+    private readonly IBookAuthorMapper _bookAuthorMapper;
 
-    public GetBooksQueryHandler(IBookRepository bookRepository, IPersonRepository personRepository, IBookMappers mappers)
+    public GetBooksQueryHandler(IBookRepository bookRepository, IPersonRepository personRepository, IBookMapper mapper, IBookAuthorMapper bookAuthorMapper)
     {
         _bookRepository = bookRepository;
         _personRepository = personRepository;
-        _mappers = mappers;
+        _mapper = mapper;
+        _bookAuthorMapper = bookAuthorMapper;
     }
 
     public async Task<Result<BookCollectionDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
@@ -28,7 +30,7 @@ public class GetBooksQueryHandler: IRequestHandler<GetBooksQuery, Result<BookCol
         try
         {
             var books = await _bookRepository.GetAllAsync();
-            var personIds = books.SelectMany(x => x.Authors.Select(d => d.PersonId).ToList());
+            var personIds = books.SelectMany(x => x.Authors.Select(d => d.PersonId).ToHashSet());
             var authors = await _personRepository.GetPersonsAsync(personIds);
             return Result<BookCollectionDto>.Success(MapToBookCollectionDto(books,authors));
         }
@@ -40,14 +42,14 @@ public class GetBooksQueryHandler: IRequestHandler<GetBooksQuery, Result<BookCol
 
     private BookCollectionDto MapToBookCollectionDto(List<Book> books, IEnumerable<Person> persons)
     {
-        return new BookCollectionDto
-        {
-            Books = books.Select(book =>
-            {
-                var bookDto = _mappers.MapToBookDto(book);
-                bookDto.Authors = _mappers.MapToBookAuthorDtoList(persons, book.Authors);
-                return bookDto;
-            }).ToList()
-        };
+        var listOfBooks = books.Select(book => MapToBookDto(book, persons)).ToList();
+        return BookCollectionDto.CreateNew(listOfBooks);
+    }
+
+    private BookDto MapToBookDto(Book book, IEnumerable<Person> persons)
+    {
+        var bookDto = _mapper.MapToBookDto(book);
+        bookDto.Authors = _bookAuthorMapper.MapToBookAuthorDtoList(persons, book.Authors);
+        return bookDto;
     }
 }

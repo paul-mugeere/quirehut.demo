@@ -13,12 +13,12 @@ public class GetBookDetailsQueryHandler : IRequestHandler<GetBookDetailsQuery,Re
 {
     private readonly IBookRepository _bookRepository;
     private readonly IPersonRepository _personRepository;
-    private readonly IBookMappers _bookMappers;
-    public GetBookDetailsQueryHandler(IBookRepository bookRepository, IPersonRepository personRepository, IBookMappers bookMappers)
+    private readonly IBookMapper _bookMapper;
+    public GetBookDetailsQueryHandler(IBookRepository bookRepository, IPersonRepository personRepository, IBookMapper bookMapper)
     {
         _bookRepository = bookRepository;
         _personRepository = personRepository;
-        _bookMappers = bookMappers;
+        _bookMapper = bookMapper;
     }
 
     public async Task<Result<BookDetailsDto>> Handle(GetBookDetailsQuery request, CancellationToken cancellationToken)
@@ -39,6 +39,6 @@ public class GetBookDetailsQueryHandler : IRequestHandler<GetBookDetailsQuery,Re
         var book = await _bookRepository.GetByIdAsync(request.BookId);
         var personIds = book.Authors.Select(d => d.PersonId).ToList();
         var persons = await _personRepository.GetPersonsAsync(personIds);
-        return _bookMappers.MapToBookDetailsDto(book,persons);;
+        return _bookMapper.MapToBookDetailsDto(book,persons);;
     }
 }

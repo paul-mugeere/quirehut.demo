@@ -19,5 +19,6 @@ public class BookProfile: Profile
         CreateMap<BookDetailsDto, BookDetails>();
         CreateMap<CreateBookRequest, CreateBookCommand>();
         CreateMap<CreateEditionRequest, EditionDto>();
+        CreateMap<BookTitleDto, BookTitle>();
     }
 }
