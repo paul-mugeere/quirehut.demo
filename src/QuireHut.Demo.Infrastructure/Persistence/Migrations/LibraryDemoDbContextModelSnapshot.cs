@@ -10,7 +10,7 @@ using QuireHut.Demo.Infrastructure.Persistence;
 
 namespace QuireHut.Demo.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(LibraryDemoDbContext))]
+    [DbContext(typeof(QuirehutDemoDbContext))]
     partial class LibraryDemoDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -28,10 +28,10 @@ namespace QuireHut.Demo.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Subject")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("subject");
+                        .HasColumnName("description");
 
                     b.Property<string>("Title")
                         .IsRequired()

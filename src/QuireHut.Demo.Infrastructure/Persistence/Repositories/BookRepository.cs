@@ -7,9 +7,9 @@ namespace QuireHut.Demo.Infrastructure.Persistence.Repositories;
 
 public class BookRepository : IBookRepository
 {
-    private IDbContextFactory<LibraryDemoDbContext> _dbContextFactory;
+    private IDbContextFactory<QuirehutDemoDbContext> _dbContextFactory;
 
-    public BookRepository(IDbContextFactory<LibraryDemoDbContext> dbContextFactory)
+    public BookRepository(IDbContextFactory<QuirehutDemoDbContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
     }

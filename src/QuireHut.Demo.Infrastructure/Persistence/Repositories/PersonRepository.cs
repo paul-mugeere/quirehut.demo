@@ -7,9 +7,9 @@ namespace QuireHut.Demo.Infrastructure.Persistence.Repositories;
 
 public class PersonRepository:IPersonRepository
 {
-    private readonly IDbContextFactory<LibraryDemoDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<QuirehutDemoDbContext> _dbContextFactory;
 
-    public PersonRepository(IDbContextFactory<LibraryDemoDbContext> dbContextFactory)
+    public PersonRepository(IDbContextFactory<QuirehutDemoDbContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
     }

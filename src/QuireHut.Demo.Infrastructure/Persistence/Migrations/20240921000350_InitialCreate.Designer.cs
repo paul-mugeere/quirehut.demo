@@ -11,7 +11,7 @@ using QuireHut.Demo.Infrastructure;
 
 namespace QuireHut.Demo.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(LibraryDemoDbContext))]
+    [DbContext(typeof(QuirehutDemoDbContext))]
     [Migration("20240921000350_InitialCreate")]
     partial class InitialCreate
     {

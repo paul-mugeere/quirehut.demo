@@ -1,8 +1,6 @@
 using QuireHut.Demo.Api.Models;
-using QuireHut.Demo.Api.Shared;
-using QuireHut.Demo.Application.Books.DTOs.Books;
 
-namespace QuireHut.Demo.Api.Inventory.Responses;
+namespace QuireHut.Demo.Api.Responses;
 
 public record GetBooksResponse
 {

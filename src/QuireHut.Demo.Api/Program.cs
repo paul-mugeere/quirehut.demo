@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using QuireHut.Demo.Api;
 using QuireHut.Demo.Api.Configurations;
 using QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions;
 

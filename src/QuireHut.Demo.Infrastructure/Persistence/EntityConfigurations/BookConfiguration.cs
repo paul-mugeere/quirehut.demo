@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using QuireHut.Demo.Domain;
 using QuireHut.Demo.Domain.Books;
 using QuireHut.Demo.Domain.Books.ValueObjects;
 using QuireHut.Demo.Infrastructure.Persistence.Helpers;
@@ -20,7 +19,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         builder.Property(book => book.Title)
         .HasConversion(c => c.Value, value => new(value));
 
-        builder.Property(book => book.Subject)
+        builder.Property(book => book.Description)
         .HasConversion(c => c.Value, value => new(value));
         
         builder.OwnsMany(book => book.Genres, bookGenres =>

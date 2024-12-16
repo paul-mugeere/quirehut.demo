@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace QuireHut.Demo.Api.Orders.Controllers;
+namespace QuireHut.Demo.Api.Controllers;
 
 [Authorize(Policy = "ManageCustomerOrder")]
 [Route("api/customers")]

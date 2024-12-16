@@ -21,10 +21,12 @@ public class BookDtoProfile:Profile
         CreateMap<Person, BookAuthorDto>()
             .ForMember(x=>x.Fullname,y=>y.MapFrom(n=>n.Fullname.ToString()))
             .ForMember(x=>x.Id,y=>y.MapFrom(n=>n.Id.Value));
+        
         CreateMap<Book, BookDto>()
             .ForMember(x=>x.Authors, y=>y.Ignore())
             .ForMember(x=>x.Title, y=>y.MapFrom(n=>n.Title.Value))
             .ForMember(x=>x.BookId,y=>y.MapFrom(n=>n.Id.Value));
+        
         CreateMap<Book, BookDetailsDto>()
             .ForMember(x=>x.Authors, y=>y.Ignore())
             .ForMember(x=>x.BookId, y=>y.MapFrom(x=>x.Id.Value))

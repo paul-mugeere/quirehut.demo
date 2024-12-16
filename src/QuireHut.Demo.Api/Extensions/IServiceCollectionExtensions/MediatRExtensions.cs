@@ -1,4 +1,3 @@
-using QuireHut.Demo.Application;
 using QuireHut.Demo.Application.Books.Commands;
 
 namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions

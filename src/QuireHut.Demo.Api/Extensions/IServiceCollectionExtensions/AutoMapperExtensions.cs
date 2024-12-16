@@ -1,4 +1,3 @@
-using AutoMapper;
 using QuireHut.Demo.Application.Books.Mappers.MappingProfiles;
 
 namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions;

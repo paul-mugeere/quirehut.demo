@@ -1,6 +1,4 @@
-﻿using QuireHut.Demo.Domain.Persons.ValueObjects;
-
-namespace QuireHut.Demo.Application.Books.DTOs.Books;
+﻿namespace QuireHut.Demo.Application.Books.DTOs.Books;
 
 public record BookDto
 {

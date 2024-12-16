@@ -1,6 +1,6 @@
-namespace QuireHut.Demo.Api.Inventory.Requests;
+namespace QuireHut.Demo.Api.Requests;
 
-public class SearchBooksRequest
+public class SearchBooks
 {
     public string? Title { get; set; }
     public string? Author { get; set; }

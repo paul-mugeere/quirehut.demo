@@ -1,4 +1,4 @@
-namespace QuireHut.Demo.Api.Shared;
+namespace QuireHut.Demo.Api.Responses;
 
 /// <summary>
 /// Allows for including related actions or resources in the response

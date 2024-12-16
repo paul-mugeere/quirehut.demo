@@ -7,19 +7,21 @@ namespace QuireHut.Demo.Application.Books.Mappers;
 
 public interface IBookTitleMapper
 {
-    BookTitleCollectionDto MapToBookTitlesDto(List<Book> books, IEnumerable<Person> authors);
+    List<BookTitleDto> MapToBookTitleDtos(List<Book> books, IEnumerable<Person> authors);
+    BookTitleDto MapToBookTitleDto(Book book, Edition edition, IEnumerable<Person> authors);
 }
 
 public class BookTitleMapper(IBookAuthorMapper bookAuthorMapper) : IBookTitleMapper
 {
-    public BookTitleCollectionDto MapToBookTitlesDto(List<Book> books, IEnumerable<Person> authors)
+    public List<BookTitleDto> MapToBookTitleDtos(List<Book> books, IEnumerable<Person> authors)
     {
         var bookTitles = books.SelectMany(book => 
-            book.Editions.Select(edition => CreateBookTitleDto(book,edition,authors))).ToList();
-        return  BookTitleCollectionDto.CreateNew(bookTitles);
+            book.Editions.Select(edition => MapToBookTitleDto(book,edition,authors))).ToList();
+        return  bookTitles;
     }
-    
-    private BookTitleDto CreateBookTitleDto(Book book, Edition edition, IEnumerable<Person> authors)
+
+
+    public BookTitleDto MapToBookTitleDto(Book book, Edition edition, IEnumerable<Person> authors)
     {
         return new BookTitleDto
         {

@@ -17,6 +17,15 @@ public class BookAuthorMapper(IMapper mapper):IBookAuthorMapper
         IReadOnlyList<BookAuthor> bookAuthors)
     {
         var authorIds = bookAuthors.Select(x => x.PersonId.Value).ToHashSet();
-        return persons.Where(person=>authorIds.Contains(person.Id.Value)).Select(person=>mapper.Map<BookAuthorDto>(person)).ToList();
+        return MapToType(persons.Where(person => authorIds.Contains(person.Id.Value)).ToList());
+    }
+
+    private List<BookAuthorDto> MapToType(object results)
+    {
+        return results switch
+        {
+            List<Person> persons => mapper.Map<List<BookAuthorDto>>(persons),
+            _ => []
+        };
     }
 }

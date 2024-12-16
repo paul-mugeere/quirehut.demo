@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using QuireHut.Demo.Domain;
 using QuireHut.Demo.Domain.Genres;
 
 namespace QuireHut.Demo.Infrastructure.Persistence.EntityConfigurations;

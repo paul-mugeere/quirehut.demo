@@ -1,5 +1,4 @@
 using MediatR;
-using QuireHut.Demo.Application.Books.DTOs;
 using QuireHut.Demo.Application.Books.DTOs.Books;
 using QuireHut.Demo.Application.Common;
 

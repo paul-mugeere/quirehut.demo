@@ -1,4 +1,4 @@
-namespace QuireHut.Demo.Api.Shared;
+namespace QuireHut.Demo.Api.Responses;
 
 public record Pagination
 {

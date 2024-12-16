@@ -1,18 +1,8 @@
-using QuireHut.Demo.Api.Inventory.Responses;
 using QuireHut.Demo.Api.Models;
-using QuireHut.Demo.Api.Shared;
 
-namespace QuireHut.Demo.Api.Inventory.Requests;
+namespace QuireHut.Demo.Api.Requests;
 
-public record CreateBookRequest(
-    string Title,
-    string Subject,
-    List<Guid> AuthorIds,
-    List<CreateEditionRequest> Editions
-);
-
-
-public record CreateEditionRequest
+public record CreateBookEdition
 {
     public string ISBN { get;  set;}
     public Format Format { get;  set;}

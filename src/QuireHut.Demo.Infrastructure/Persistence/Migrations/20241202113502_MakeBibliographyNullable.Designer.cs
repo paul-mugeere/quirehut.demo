@@ -11,7 +11,7 @@ using QuireHut.Demo.Infrastructure.Persistence;
 
 namespace QuireHut.Demo.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(LibraryDemoDbContext))]
+    [DbContext(typeof(QuirehutDemoDbContext))]
     [Migration("20241202113502_MakeBibliographyNullable")]
     partial class MakeBibliographyNullable
     {

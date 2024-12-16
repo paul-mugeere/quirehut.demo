@@ -8,7 +8,7 @@ namespace QuireHut.Demo.Application.Books.Mappers;
 public interface IBookMapper
 {
     BookDto MapToBookDto(Book book);
-    BookDetailsDto MapToBookDetailsDto(Book book, IEnumerable<Person> persons);
+    BookDetailsDto MapToBookDetailsDto(Book? book, IEnumerable<Person> persons);
 }
 
 public class BookMapper(IMapper mapper, IBookAuthorMapper bookAuthorMapper) : IBookMapper
@@ -18,7 +18,7 @@ public class BookMapper(IMapper mapper, IBookAuthorMapper bookAuthorMapper) : IB
         return mapper.Map<BookDto>(book);
     }
 
-    public BookDetailsDto MapToBookDetailsDto(Book book, IEnumerable<Person> persons)
+    public BookDetailsDto MapToBookDetailsDto(Book? book, IEnumerable<Person> persons)
     {
         var result = mapper.Map<BookDetailsDto>(book);
         result.Authors = bookAuthorMapper.MapToBookAuthorDtoList(persons,book.Authors);

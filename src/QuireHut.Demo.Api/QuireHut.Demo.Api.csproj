@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <UserSecretsId>1bef8de3-5df1-452b-ba67-0634f5ef0b00</UserSecretsId>
+    <UserSecretsId>73ed7ef0-fdb0-41d3-be11-3fc4638ca2f1</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +26,4 @@
     <ProjectReference Include="../QuireHut.Demo.Domain/QuireHut.Demo.Domain.csproj" />
     <ProjectReference Include="../QuireHut.Demo.Infrastructure/QuireHut.Demo.Infrastructure.csproj" />
   </ItemGroup>
-<ItemGroup>
-  <Folder Include="Sales\Requests\" />
-</ItemGroup>
 </Project>

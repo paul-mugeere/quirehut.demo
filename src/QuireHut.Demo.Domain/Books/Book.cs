@@ -11,79 +11,69 @@ public class Book
 {
     public BookId Id { get; } = BookId.Empty;
     public Title Title { get; } = Title.Empty;
-    public Subject Subject { get; } = Subject.Empty;
+    public BookDescription Description { get; } = BookDescription.Empty;
 
-    private readonly List<BookGenre> _genres  = new();
+    private readonly List<BookGenre> _genres  = [];
     public IReadOnlyList<BookGenre> Genres => _genres.AsReadOnly();
     
-    private readonly List<Edition> _editions  = new();
+    private readonly List<Edition> _editions  = [];
     public IReadOnlyList<Edition> Editions => _editions.AsReadOnly();
     
-    private readonly List<BookAuthor> _authors  = new ();
+    private readonly List<BookAuthor> _authors  = [];
     public IReadOnlyList<BookAuthor> Authors => _authors.AsReadOnly();
-
-    public void AddEdition(Edition edition)
-    {
-        _editions.Add(edition);
-        EnsureInvariants();
-    }
+    
+    public void AddAuthor(BookAuthor author) => HandleStateChange(() => _authors.Add(author));
+    public void AddEdition(Edition edition) => HandleStateChange(() => _editions.Add(edition));
 
     public void SetEditionStatus(EditionId editionId, EditionStatus status)
-    {
-        var edition = TryGetEditionOfId(editionId);
-        edition.UpdateStatus(status);
-    }
+        => HandleStateChange(() =>
+        {
+            var edition = TryGetEditionOfId(editionId);
+            edition.UpdateStatus(status);
+        });
 
     public void RemoveEdition(EditionId editionId)
-    {
-        _editions.RemoveAll(e => e.Id == editionId);
-    }
+        => HandleStateChange(() => _editions.RemoveAll(e => e.Id == editionId));
 
     public void UpdatePrice(EditionId editionId, decimal price)
-    {
-        var edition = TryGetEditionOfId(editionId);
-        edition.UpdatePrice(price);
-    }
+        => HandleStateChange(() =>
+        {
+            var edition = TryGetEditionOfId(editionId);
+            edition.UpdatePrice(price);
+        });
 
     public void UpdateStock(EditionId editionId, int stock)
-    {
-        var edition = TryGetEditionOfId(editionId);
-        edition.UpdateStock(stock);
-    }
+        => HandleStateChange(() =>
+        {
+            var edition = TryGetEditionOfId(editionId);
+            edition.UpdateStock(stock);
+        });
 
-    public void AddGenre(GenreId genreId)
-    {
-        _genres.Add(BookGenre.CreateNew(Id,genreId));
-        EnsureInvariants();
-    }
+    public void AddGenre(GenreId genreId) 
+        => HandleStateChange(() =>  _genres.Add(BookGenre.CreateNew(Id,genreId)));
 
     public void RemoveGenre(GenreId genreId)
     {
-        if (ContainsGenre(genreId))
-            _genres.RemoveAll(id => id.GenreId == genreId);
+        HandleStateChange(() =>
+        {
+            if (ContainsGenre(genreId))
+                _genres.RemoveAll(id => id.GenreId == genreId);
+        });
+    }
+    
+    private void HandleStateChange(Action action)
+    {
+        action();
+        EnsureInvariants();
     }
 
     public static Book CreateNew(
         Title title,
-        Subject subject,
+        BookDescription bookDescription,
         List<Edition> editions,
         List<PersonId> authors) =>
-        new(title, subject, editions, authors);
+        new(title, bookDescription, editions, authors);
 
-    private Book(
-    Title title,
-    Subject subject,
-    List<Edition> editionsCollection,
-    List<PersonId> authors)
-    {
-        Id = BookId.CreateNew();
-        Title = title;
-        Subject = subject;
-        _authors = authors?.Select(x=> BookAuthor.CreateNew(Id, x)).ToList()??[];
-        _editions = editionsCollection;
-
-        EnsureInvariants();
-    }
 
     private void EnsureInvariants()
     {
@@ -102,7 +92,7 @@ public class Book
 
     private bool HasDuplicateEditions()
     {
-        return _editions.Count() != _editions.DistinctBy(x => x.ISBN).Count();
+        return _editions.Count != _editions.DistinctBy(x => x.ISBN).Count();
     }
 
     private bool HasNoAuthors() => _authors.Count == 0;
@@ -121,5 +111,19 @@ public class Book
 
     // For serialization
     private Book() { }
+    
+    private Book(
+        Title title,
+        BookDescription description,
+        List<Edition> editionsCollection,
+        List<PersonId> authors)
+    {
+        Id = BookId.CreateNew();
+        Title = title;
+        Description = description;
+        _authors = authors?.Select(x=> BookAuthor.CreateNew(Id, x)).ToList()??[];
+        _editions = editionsCollection;
+        EnsureInvariants();
+    }
 
 }

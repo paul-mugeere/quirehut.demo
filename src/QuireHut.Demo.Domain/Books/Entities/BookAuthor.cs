@@ -16,15 +16,15 @@ public class BookAuthor
     
     private BookAuthor(){}
 
-    private BookAuthor(BookAuthorId id, BookId bookId, PersonId personId)
+    private BookAuthor(BookId bookId, PersonId personId)
     {
-        Id = id;
+        Id = BookAuthorId.CreateNew();
         BookId = bookId;
         PersonId = personId;
     }
 
     public static BookAuthor CreateNew(BookId bookId, PersonId personId)
     {
-        return new(BookAuthorId.CreateNew(), bookId, personId);
+        return new(bookId, personId);
     }
 }

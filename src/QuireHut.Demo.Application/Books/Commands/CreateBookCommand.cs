@@ -21,7 +21,7 @@ public static class CreateBookCommandMapper{
     public static Book MapToBook(this CreateBookCommand command){
         return Book.CreateNew(
             new Title(command.Title),
-            new Subject(command.Subject),
+            new BookDescription(command.Subject),
             command.Editions.Select(x=>
                 Edition.CreateNew(
                     new ISBN(x.ISBN),

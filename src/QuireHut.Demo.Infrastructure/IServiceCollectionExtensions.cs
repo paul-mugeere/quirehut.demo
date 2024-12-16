@@ -9,11 +9,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDatabase(this IServiceCollection services, string connectionString)
     {
-        return services.AddDbContextFactory<LibraryDemoDbContext>(options =>
+        return services.AddDbContextFactory<QuirehutDemoDbContext>(options =>
         {
             options.UseNpgsql(
                 connectionString, 
-                npsqlOptions => npsqlOptions.MigrationsAssembly(typeof(LibraryDemoDbContext).Assembly.GetName().Name))
+                npSqlOptions => npSqlOptions.MigrationsAssembly(typeof(QuirehutDemoDbContext).Assembly.GetName().Name))
                 .UseSnakeCaseNamingConvention();
         });
     }

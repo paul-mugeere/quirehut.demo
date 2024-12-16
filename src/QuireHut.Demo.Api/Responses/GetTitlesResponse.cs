@@ -1,8 +1,8 @@
 using QuireHut.Demo.Api.Models;
 
-namespace QuireHut.Demo.Api.Sales.Responses;
+namespace QuireHut.Demo.Api.Responses;
 
-public class GetTitlesResponse
+public record GetTitlesResponse
 {
     public IList<BookTitle> Titles { get; set; }
 }

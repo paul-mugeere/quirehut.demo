@@ -17,7 +17,7 @@ public class BookTests
     {
         // Given
         var title = new Title("some-title");
-        var subject = new Subject("test-subject");
+        var subject = new BookDescription("test-subject");
         var author = Person.CreateNew("test-author", "test-author-2");
         var edition = Edition.CreateNew(new ISBN("test-isbn"), Format.HardPaper, "English",new Publisher("test-publisher"),
             DateTime.Now,  new Dimensions(23, 14, 45), 1000, 200, EditionStatus.Planned);
@@ -28,7 +28,7 @@ public class BookTests
         // Then
         book.Should().NotBeNull();
         book.Title.Should().Be(title);
-        book.Subject.Should().Be(subject);
+        book.Description.Should().Be(subject);
         book.Editions.Should().NotBeEmpty();
         book.Editions.Should().Contain(x=>x.Id==edition.Id);
     }
@@ -39,7 +39,7 @@ public class BookTests
         // Given
         var isbn = new ISBN("test-isbn");
         var title = new Title("some-title");
-        var subject = new Subject("test-subject");
+        var subject = new BookDescription("test-subject");
         var author = Person.CreateNew("test-author", "test-bibliography");
 
         // When
@@ -56,7 +56,7 @@ public class BookTests
         // Given
         var isbn = new ISBN("test-isbn");
         var title = new Title("some-title");
-        var subject = new Subject("test-subject");
+        var subject = new BookDescription("test-subject");
         var edition = Edition.CreateNew(isbn, Format.HardPaper, "English",new Publisher("test-publisher"), 
             DateTime.Now, new Dimensions(23, 14, 45), 1000, 200, EditionStatus.Planned);
 
@@ -75,7 +75,7 @@ public class BookTests
             DateTime.Now,  new Dimensions(2, 5, 6), 1000, 200, EditionStatus.Planned);
         var bookEdition = Edition.CreateNew(new("test-isbn1"), Format.AudioBook, "test-language3",new Publisher("test-publisher"),
             DateTime.Now,  new Dimensions(), 1000, 200, EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [PersonId.CreateNew()]);
+        var book = Book.CreateNew(new Title("some-title"), new BookDescription("test-subject"), [bookEdition], [PersonId.CreateNew()]);
         book.AddEdition(editionToAdd);
 
         book.Editions.Should().Contain(x=>x.Id==editionToAdd.Id);
@@ -91,7 +91,7 @@ public class BookTests
             DateTime.Now,  new Dimensions(), 1000, 200, EditionStatus.Planned);
 
         var author = Person.CreateNew("test-author", "test-bibliography");
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [existingBookEdition], [author.Id]);
+        var book = Book.CreateNew(new Title("some-title"), new BookDescription("test-subject"), [existingBookEdition], [author.Id]);
         var action = () => book.AddEdition(editionToAdd);
 
         action.Should().Throw<InvalidBookException>().Where(x => x.Message.Equals("A book cannot editions with duplicate ISBN."));
@@ -111,7 +111,7 @@ public class BookTests
             1000, 
             200, 
             EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [PersonId.CreateNew()]);
+        var book = Book.CreateNew(new Title("some-title"), new BookDescription("test-subject"), [bookEdition], [PersonId.CreateNew()]);
 
         book.SetEditionStatus(bookEdition.Id, statusToUpdateTo);
 
@@ -131,7 +131,7 @@ public class BookTests
             2000, 
             200, 
             EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [PersonId.CreateNew()]);
+        var book = Book.CreateNew(new Title("some-title"), new BookDescription("test-subject"), [bookEdition], [PersonId.CreateNew()]);
 
         book.UpdatePrice(bookEdition.Id, priceToUpdateTo);
 
@@ -152,7 +152,7 @@ public class BookTests
             2000, 
             200, 
             EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [PersonId.CreateNew()]);
+        var book = Book.CreateNew(new Title("some-title"), new BookDescription("test-subject"), [bookEdition], [PersonId.CreateNew()]);
 
         book.UpdateStock(bookEdition.Id, stockToUpdateTo);
 
@@ -163,7 +163,7 @@ public class BookTests
     public void AddGenre_ToBook_ShouldIncludeTheGenreInTheBookGenres()
     {
         var genreToAdd = GenreId.CreateNew();
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(
+        var book = Book.CreateNew(new Title("some-title"), new BookDescription("test-subject"), [Edition.CreateNew(
             new("test-isbn1"), 
             Format.AudioBook, 
             "test-language3",
@@ -186,7 +186,7 @@ public class BookTests
         var genreToAdd = GenreId.CreateNew();
         var book = Book.CreateNew(
             new Title("some-title"), 
-            new Subject("test-subject"), 
+            new BookDescription("test-subject"), 
             [Edition.CreateNew( new("test-isbn1"), 
                 Format.AudioBook, "test-language3",
                 new Publisher("test-publisher"), 
@@ -208,7 +208,7 @@ public class BookTests
     public void RemoveGenre_FromBook_ShouldRemoveTheGenreFromTheBookGenres()
     {
         var genreToRemove = GenreId.CreateNew();
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [Edition.CreateNew(new("test-isbn1"), Format.AudioBook, "test-language3",new Publisher("test-publisher"),
+        var book = Book.CreateNew(new Title("some-title"), new BookDescription("test-subject"), [Edition.CreateNew(new("test-isbn1"), Format.AudioBook, "test-language3",new Publisher("test-publisher"),
             DateTime.Now, new Dimensions(), 2000, 200, EditionStatus.Planned)], [PersonId.CreateNew()]);
         book.AddGenre(genreToRemove);
 
@@ -220,8 +220,8 @@ public class BookTests
     [Fact]
     public void RemoveEdition_FromBook_ShouldRemoveTheEditionFromTheBookEditions()
     {
-        var bookEdition = Edition.CreateNew(
-            new("test-isbn1"), 
+        var editions = new List<Edition> { Edition.CreateNew(
+            new("test-isbn2"), 
             Format.AudioBook, 
             "test-language3",
             new Publisher("test-publisher"), 
@@ -229,11 +229,22 @@ public class BookTests
             new Dimensions(), 
             2000, 
             200, 
-            EditionStatus.Planned);
-        var book = Book.CreateNew(new Title("some-title"), new Subject("test-subject"), [bookEdition], [PersonId.CreateNew()]);
+            EditionStatus.Planned),
+            Edition.CreateNew(
+                new("test-isbn1"),
+                Format.AudioBook,
+                "test-language3",
+                new Publisher("test-publisher"),
+                DateTime.Now,
+                new Dimensions(),
+                2000,
+                200,
+                EditionStatus.Planned)
+        };
+        var book = Book.CreateNew(new Title("some-title"), new BookDescription("test-subject"), editions, [PersonId.CreateNew()]);
+        var bookEditionIdToRemove = editions[0].Id;
+        book.RemoveEdition(bookEditionIdToRemove);
 
-        book.RemoveEdition(bookEdition.Id);
-
-        book.Editions.Should().NotContain(x=>x.Id==bookEdition.Id);
+        book.Editions.Should().NotContain(x=>x.Id==bookEditionIdToRemove);
     }
 }

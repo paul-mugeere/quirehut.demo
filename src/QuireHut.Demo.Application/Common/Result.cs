@@ -6,7 +6,7 @@ public class Result<T>
     public T? Data { get; } = default;
     public string? Error { get; }
 
-    private Result(bool isSuccess, T data, string? error = "")
+    protected Result(bool isSuccess, T data, string? error = "")
     {
         IsSuccess = isSuccess;
         Data = data;
@@ -14,6 +14,7 @@ public class Result<T>
     }
 
     public static Result<T> Success(T data) => new Result<T>(true, data);
+    public static Result<T> Success(string message) => new Result<T>(true, default, message);
 
     public static Result<T> Failure(string? error) => new Result<T>(false, default, error);
 

@@ -1,11 +1,10 @@
 using AutoMapper;
-using QuireHut.Demo.Api.Inventory.Requests;
-using QuireHut.Demo.Api.Inventory.Responses;
 using QuireHut.Demo.Api.Models;
+using QuireHut.Demo.Api.Requests;
 using QuireHut.Demo.Application.Books.Commands;
 using QuireHut.Demo.Application.Books.DTOs.Books;
 
-namespace QuireHut.Demo.Api.Inventory.Mappers.MappingProfiles;
+namespace QuireHut.Demo.Api.Mappers.Profiles;
 
 public class BookProfile: Profile
 {
@@ -17,8 +16,8 @@ public class BookProfile: Profile
         CreateMap<BookAuthorDto, BookAuthor>();
         CreateMap<BookDto, Book>();
         CreateMap<BookDetailsDto, BookDetails>();
-        CreateMap<CreateBookRequest, CreateBookCommand>();
-        CreateMap<CreateEditionRequest, EditionDto>();
+        CreateMap<CreateBook, CreateBookCommand>();
+        CreateMap<CreateBookEdition, EditionDto>();
         CreateMap<BookTitleDto, BookTitle>();
     }
 }
