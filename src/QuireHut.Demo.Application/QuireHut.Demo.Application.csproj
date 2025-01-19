@@ -11,10 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
-    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="10.0.0" />
-    <PackageReference Include="MediatR" Version="12.3.0" />
+    <PackageReference Include="AutoMapper" />
+    <PackageReference Include="AutoMapper.Collection" />
+    <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" />
+    <PackageReference Include="MediatR" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../QuireHut.Demo.Domain/QuireHut.Demo.Domain.csproj" />
