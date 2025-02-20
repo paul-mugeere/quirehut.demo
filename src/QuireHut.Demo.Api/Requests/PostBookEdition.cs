@@ -2,7 +2,7 @@ using QuireHut.Demo.Api.Models;
 
 namespace QuireHut.Demo.Api.Requests;
 
-public record CreateBookEdition
+public record PostBookEdition
 {
     public string ISBN { get;  set;}
     public Format Format { get;  set;}

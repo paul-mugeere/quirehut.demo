@@ -19,20 +19,20 @@ public static class BooksQueries
                 BookId = book.Id.Value,
                 Title = book.Title.ToString(),
                 CoverImageUrl = "",
-                Authors = EF.Property<ICollection<BookAuthor>>(book, "Authors")
-                    .Select(x => new Author(x.PersonId.Value, x.Person.Fullname.ToString())),
-                Editions = EF.Property<ICollection<Edition>>(book, "Editions").Select(x => new EditionItem()
+                Authors = book.Authors.Select(author => new Author(author.PersonId.Value, author.Person.Fullname.ToString())), 
+                Editions = book.Editions
+                    .Select(edition => new EditionItem
                 {
-                    EditionId = x.Id.Value,
-                    Dimensions = Dimensions.CreateNew(x.Dimensions),
-                    Price = x.Price,
-                    Publisher = Publisher.CreateNew(x.Publisher),
-                    NumberOfPages = x.NumberOfPages,
-                    PublicationDate = x.PublicationDate,
-                    Language = x.Language,
-                    Status = (EditionItemStatus)x.Status,
-                    Stock = x.Stock,
-                    ISBN = x.ISBN.Value,
+                    EditionId = edition.Id.Value,
+                    Dimensions = Dimensions.CreateNew(edition.Dimensions),
+                    Price = edition.Price,
+                    Publisher = Publisher.CreateNew(edition.Publisher),
+                    NumberOfPages = edition.NumberOfPages,
+                    PublicationDate = edition.PublicationDate,
+                    Language = edition.Language,
+                    Status = (EditionItemStatus)edition.Status,
+                    Stock = edition.Stock,
+                    ISBN = edition.ISBN.Value
                 })
             });
     }
@@ -49,11 +49,9 @@ public static class BooksQueries
                 Title = book.Title.ToString(),
                 Format = edition.Format,
                 Language = edition.Language,
-                Authors = EF.Property<ICollection<BookAuthor>>(book, "Authors").Select(x => new
-                    Author(x.PersonId.Value, x.Person.Fullname.ToString())),
+                Authors = book.Authors.Select(author => new Author(author.PersonId.Value, author.Person.Fullname.ToString())),
                 Price = edition.Price,
                 PublicationYear = edition.PublicationDate.Value.Year,
             }));
     }
-    
 }

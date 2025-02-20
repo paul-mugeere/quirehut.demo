@@ -1,8 +1,8 @@
 namespace QuireHut.Demo.Api.Requests;
 
-public record CreateBook(
+public record PostBookRequest(
     string Title,
     string Subject,
     List<Guid> AuthorIds,
-    List<CreateBookEdition> Editions
+    List<PostBookEdition> Editions
 );

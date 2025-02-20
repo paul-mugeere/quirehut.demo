@@ -18,8 +18,8 @@ public class BookProfile: Profile
         CreateMap<Author, BookAuthor>();
         CreateMap<BookQueryResult, Book>();
         CreateMap<BookQueryResult, BookDetails>();
-        CreateMap<CreateBook, CreateBookCommand>();
-        CreateMap<CreateBookEdition, EditionItem>();
+        CreateMap<PostBookRequest, CreateBookCommand>();
+        CreateMap<PostBookEdition, EditionItem>();
         CreateMap<BookTitleWithAuthorsQueryResult, BookTitle>();
     }
 }

@@ -13,10 +13,10 @@ namespace QuireHut.Demo.Api.Controllers;
 public class TitlesQueryController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     [HttpGet("")]
-    public async Task<ActionResult<GetTitlesResponse>> Get()
+    public async Task<ActionResult<TitlesResponse>> Get()
     {
         var result = await mediator.Send(new GetBookTitlesQuery());
-        var response = new GetTitlesResponse()
+        var response = new TitlesResponse()
         {
             Titles = mapper.Map<List<BookTitle>?>(result.Data?.Titles) ?? []
         };
@@ -26,10 +26,10 @@ public class TitlesQueryController(IMediator mediator, IMapper mapper) : Control
     }
 
     [HttpGet("{editionId:guid}/Editions")]
-    public async Task<ActionResult<GetTitleDetailsResponse>> Get(Guid editionId)
+    public async Task<ActionResult<TitleDetailsResponse>> Get(Guid editionId)
     {
         var result = await mediator.Send(new GetBookTitleDetailsQuery(editionId));
-        var response = new GetTitleDetailsResponse(mapper.Map<BookTitleDetails>(result.Data));
+        var response = new TitleDetailsResponse(mapper.Map<BookTitleDetails>(result.Data));
         return result.IsSuccess
             ? Ok(response)
             : StatusCode(500, result.Error);

@@ -16,10 +16,7 @@ public class GetBookTitleDetailsQueryHandler(
         try
         {
             var result = await bookQueryService.GetBookTitleByEditionIdAsync(new EditionId(request.EditionId));
-            if (result ==null)
-                return Result<BookTitleWithAuthorsQueryResult>.Success($"Edition of id {request.EditionId} not found");
-            
-            return Result<BookTitleWithAuthorsQueryResult>.Success(result);
+            return result ==null ? Result<BookTitleWithAuthorsQueryResult>.Success($"Edition of id {request.EditionId} not found") : Result<BookTitleWithAuthorsQueryResult>.Success(result);
         }
         catch (Exception e)
         {

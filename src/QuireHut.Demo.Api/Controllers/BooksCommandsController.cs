@@ -12,15 +12,15 @@ namespace QuireHut.Demo.Api.Controllers;
 public class BooksCommandsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     [HttpPost("")]
-    public async Task<ActionResult<CreateBookResponse>> Post(CreateBook book)
+    public async Task<ActionResult<BookIdResponse>> Post(PostBookRequest bookRequest)
     {
-        var command = mapper.Map<CreateBookCommand>(book);
+        var command = mapper.Map<CreateBookCommand>(bookRequest);
         var result = await mediator.Send(command);
         
         return result.IsSuccess
             ? CreatedAtRoute(
                 routeName:"GetBookById",
-                new {bookId=result.Data}, new CreateBookResponse(result.Data))
+                new {bookId=result.Data}, new BookIdResponse(result.Data))
             : StatusCode(500, result.Error);
     }
 }

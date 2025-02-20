@@ -14,11 +14,11 @@ public class BooksQueryController(IMediator mediator, IMapper mapper) : Controll
 {
     
     [HttpGet("")]
-    public async Task<ActionResult<GetBooksResponse>> Get()
+    public async Task<ActionResult<BooksCollectionResponse>> Get()
     {
         var result = await mediator.Send(new GetBooksQuery());
         var books = mapper.Map<List<BookQueryResult>?, List<Book>?>(result.Data?.Books) ?? [];
-        var booksResponse = GetBooksResponse.CreateNew(books);
+        var booksResponse = BooksCollectionResponse.CreateNew(books);
         
         return result.IsSuccess
             ? Ok(booksResponse)
@@ -26,11 +26,11 @@ public class BooksQueryController(IMediator mediator, IMapper mapper) : Controll
     }
 
     [HttpGet("{bookId}", Name = "GetBookById")]
-    public async Task<ActionResult<GetBookDetailsResponse>> Get(Guid bookId)
+    public async Task<ActionResult<BookDetailsResponse>> Get(Guid bookId)
     {
         var result = await mediator.Send(new GetBookDetailsQuery(bookId));
         var bookDetails = mapper.Map<BookDetails>(result.Data);
-        var getBookDetailsResponse = GetBookDetailsResponse.CreateNew(bookDetails);
+        var getBookDetailsResponse = BookDetailsResponse.CreateNew(bookDetails);
         
         return result.IsSuccess
             ? Ok(getBookDetailsResponse)
