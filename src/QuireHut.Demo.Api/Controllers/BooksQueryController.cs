@@ -17,7 +17,7 @@ public class BooksQueryController(IMediator mediator, IMapper mapper) : Controll
     public async Task<ActionResult<GetBooksResponse>> Get()
     {
         var result = await mediator.Send(new GetBooksQuery());
-        var books = mapper.Map<List<BookDto>?, List<Book>?>(result.Data?.Books) ?? [];
+        var books = mapper.Map<List<BookQueryResult>?, List<Book>?>(result.Data?.Books) ?? [];
         var booksResponse = GetBooksResponse.CreateNew(books);
         
         return result.IsSuccess

@@ -25,10 +25,10 @@ public class TitlesQueryController(IMediator mediator, IMapper mapper) : Control
           : StatusCode(500, result.Error);
     }
 
-    [HttpGet("{id:guid}/Editions/{editionId:guid}")]
-    public async Task<ActionResult<GetTitleDetailsResponse>> Get(Guid id, Guid editionId)
+    [HttpGet("{editionId:guid}/Editions")]
+    public async Task<ActionResult<GetTitleDetailsResponse>> Get(Guid editionId)
     {
-        var result = await mediator.Send(new GetBookTitleDetailsQuery(id,editionId));
+        var result = await mediator.Send(new GetBookTitleDetailsQuery(editionId));
         var response = new GetTitleDetailsResponse(mapper.Map<BookTitleDetails>(result.Data));
         return result.IsSuccess
             ? Ok(response)

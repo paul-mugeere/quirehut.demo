@@ -1,5 +1,3 @@
-using QuireHut.Demo.Application.Books.Mappers.MappingProfiles;
-
 namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions;
 
 public static class AutoMapperExtensions
@@ -8,7 +6,6 @@ public static class AutoMapperExtensions
     {
         services.AddAutoMapper(cfg =>
         {
-            cfg.AddMaps(typeof(BookDtoProfile).Assembly);
             cfg.AddMaps(typeof(Program).Assembly);
         });
         return services;

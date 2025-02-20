@@ -1,6 +1,5 @@
 using MediatR;
 using QuireHut.Demo.Application.Books.DTOs.Books;
-using QuireHut.Demo.Application.Books.Mappers;
 using QuireHut.Demo.Application.Books.Queries;
 using QuireHut.Demo.Application.Books.Services;
 using QuireHut.Demo.Application.Common;
@@ -8,22 +7,20 @@ using QuireHut.Demo.Application.Common;
 namespace QuireHut.Demo.Application.Books.QueryHandlers;
 
 public class GetBookTitlesQueryHandler(
-    IBookTitleMapper mapper,
     IBookQueryService bookQueryService)
-    : IRequestHandler<GetBookTitlesQuery, Result<BookTitleCollectionDto>>
+    : IRequestHandler<GetBookTitlesQuery, Result<BookTitleCollectionQueryResult>>
 {
 
-    public async Task<Result<BookTitleCollectionDto>> Handle(GetBookTitlesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<BookTitleCollectionQueryResult>> Handle(GetBookTitlesQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var bookTitles = await bookQueryService.GetBooksAsync().ConfigureAwait(false);
-            var result = mapper.MapToBookTitleDtos(bookTitles.books, bookTitles.authors);
-            return Result<BookTitleCollectionDto>.Success(BookTitleCollectionDto.CreateNew(result));
+            var bookTitles = await bookQueryService.GetBookTitlesWithAuthorsAsync().ConfigureAwait(false);
+            return Result<BookTitleCollectionQueryResult>.Success(BookTitleCollectionQueryResult.CreateNew(bookTitles));
         }
         catch (Exception e)
         {
-            return Result<BookTitleCollectionDto>.Failure(e.Message);
+            return Result<BookTitleCollectionQueryResult>.Failure(e.Message);
         }
         
     }

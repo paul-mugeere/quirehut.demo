@@ -9,13 +9,13 @@ public class BookTitleProfile : Profile
 
     public BookTitleProfile()
     {
-        CreateMap<BookTitleDto, BookTitle>();
-        CreateMap<BookTitleDto, BookTitleDetails>()
-            .ForMember(dest=>dest.PublicationDate, src =>
+        CreateMap<BookTitleWithAuthorsQueryResult, BookTitle>();
+        CreateMap<BookTitleWithAuthorsQueryResult, BookTitleDetails>()
+            .ForMember(dest=>dest.PublicationYear, src =>
             {
-                src.PreCondition(dto => dto.PublicationDate.HasValue);
-                src.MapFrom(dto => dto.PublicationDate.Value.Year);
+                src.PreCondition(dto => dto.PublicationYear.HasValue);
+                src.MapFrom(dto => dto.PublicationYear.Value);
             });
-        CreateMap<BookAuthorDto, BookTitleAuthor>();
+        CreateMap<Author, BookTitleAuthor>();
     }
 }

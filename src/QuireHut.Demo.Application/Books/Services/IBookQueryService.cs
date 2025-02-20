@@ -1,11 +1,12 @@
-using QuireHut.Demo.Domain.Books;
+using QuireHut.Demo.Application.Books.DTOs.Books;
 using QuireHut.Demo.Domain.Books.ValueObjects;
-using QuireHut.Demo.Domain.Persons;
 
 namespace QuireHut.Demo.Application.Books.Services;
 
 public interface IBookQueryService
 {
-    Task<(List<Book> books, List<Person> authors)> GetBooksAsync();
-    Task<(Book? book, List<Person> authors)> GetBookByIdAsync(BookId bookId);
+    Task<List<BookTitleWithAuthorsQueryResult>> GetBookTitlesWithAuthorsAsync();
+    Task<List<BookQueryResult>> GetBooksAsync();
+    Task<BookQueryResult?> GetBookByIdAsync(BookId bookId);
+    Task<BookTitleWithAuthorsQueryResult?> GetBookTitleByEditionIdAsync(EditionId editionId);
 }

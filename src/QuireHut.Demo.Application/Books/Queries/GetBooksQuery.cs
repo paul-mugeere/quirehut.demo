@@ -4,6 +4,6 @@ using QuireHut.Demo.Application.Common;
 
 namespace QuireHut.Demo.Application.Books.Queries;
 
-public record GetBooksQuery : IRequest<Result<BookCollectionDto>>
+public record GetBooksQuery : IRequest<Result<BookCollectionQueryResult>>
 {
 }

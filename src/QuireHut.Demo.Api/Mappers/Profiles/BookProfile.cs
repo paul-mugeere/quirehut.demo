@@ -3,6 +3,8 @@ using QuireHut.Demo.Api.Models;
 using QuireHut.Demo.Api.Requests;
 using QuireHut.Demo.Application.Books.Commands;
 using QuireHut.Demo.Application.Books.DTOs.Books;
+using Dimensions = QuireHut.Demo.Application.Books.DTOs.Books.Dimensions;
+using Publisher = QuireHut.Demo.Application.Books.DTOs.Books.Publisher;
 
 namespace QuireHut.Demo.Api.Mappers.Profiles;
 
@@ -10,14 +12,14 @@ public class BookProfile: Profile
 {
     public BookProfile()
     {
-        CreateMap<EditionDto, Edition>();
-        CreateMap<DimensionsDto, Dimensions>().ReverseMap();
-        CreateMap<PublisherDto, Publisher>().ReverseMap();
-        CreateMap<BookAuthorDto, BookAuthor>();
-        CreateMap<BookDto, Book>();
-        CreateMap<BookDetailsDto, BookDetails>();
+        CreateMap<EditionItem, Edition>();
+        CreateMap<Dimensions, Models.Dimensions>().ReverseMap();
+        CreateMap<Publisher, Models.Publisher>().ReverseMap();
+        CreateMap<Author, BookAuthor>();
+        CreateMap<BookQueryResult, Book>();
+        CreateMap<BookQueryResult, BookDetails>();
         CreateMap<CreateBook, CreateBookCommand>();
-        CreateMap<CreateBookEdition, EditionDto>();
-        CreateMap<BookTitleDto, BookTitle>();
+        CreateMap<CreateBookEdition, EditionItem>();
+        CreateMap<BookTitleWithAuthorsQueryResult, BookTitle>();
     }
 }
