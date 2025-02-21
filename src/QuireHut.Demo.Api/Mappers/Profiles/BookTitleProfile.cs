@@ -1,6 +1,6 @@
 using AutoMapper;
 using QuireHut.Demo.Api.Models;
-using QuireHut.Demo.Application.Books.DTOs.Books;
+using QuireHut.Demo.Application.Books.Queries.ReadModels;
 
 namespace QuireHut.Demo.Api.Mappers.Profiles;
 

@@ -3,7 +3,7 @@ using QuireHut.Demo.Domain.Persons;
 using QuireHut.Demo.Domain.Persons.Repositories;
 using QuireHut.Demo.Domain.Persons.ValueObjects;
 
-namespace QuireHut.Demo.Infrastructure.Persistence.Repositories;
+namespace QuireHut.Demo.Infrastructure.Persistence.Persons;
 
 public class PersonRepository:IPersonRepository
 {

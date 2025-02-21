@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Books/CommandHandlers/" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="AutoMapper.Collection" />
     <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" />

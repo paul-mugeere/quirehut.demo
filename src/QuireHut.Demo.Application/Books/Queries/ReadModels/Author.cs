@@ -1,6 +1,6 @@
 using QuireHut.Demo.Domain.Persons;
 
-namespace QuireHut.Demo.Application.Books.DTOs.Books;
+namespace QuireHut.Demo.Application.Books.Queries.ReadModels;
 
 public record Author(Guid Id, string Fullname)
 {

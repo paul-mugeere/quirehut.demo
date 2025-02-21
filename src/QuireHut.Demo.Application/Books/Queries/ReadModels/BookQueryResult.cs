@@ -1,6 +1,6 @@
 using QuireHut.Demo.Domain.Books;
 
-namespace QuireHut.Demo.Application.Books.DTOs.Books;
+namespace QuireHut.Demo.Application.Books.Queries.ReadModels;
 
 public record BookQueryResult
 {

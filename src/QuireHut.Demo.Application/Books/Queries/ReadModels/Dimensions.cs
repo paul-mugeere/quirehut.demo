@@ -1,4 +1,4 @@
-namespace QuireHut.Demo.Application.Books.DTOs.Books;
+namespace QuireHut.Demo.Application.Books.Queries.ReadModels;
 
 public record Dimensions(decimal? Height, decimal? Width, decimal? Depth)
 {

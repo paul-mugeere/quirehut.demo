@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using QuireHut.Demo.Application.Books.DTOs.Books;
+using QuireHut.Demo.Application.Books.Queries.ReadModels;
 using QuireHut.Demo.Application.Common;
 using QuireHut.Demo.Domain.Books;
 using QuireHut.Demo.Domain.Books.Enums;
