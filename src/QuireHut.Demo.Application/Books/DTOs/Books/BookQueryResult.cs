@@ -1,3 +1,5 @@
+using QuireHut.Demo.Domain.Books;
+
 namespace QuireHut.Demo.Application.Books.DTOs.Books;
 
 public record BookQueryResult
@@ -7,4 +9,13 @@ public record BookQueryResult
     public string CoverImageUrl { get; set; } = string.Empty;
     public IEnumerable<Author> Authors { get; set; }
     public IEnumerable<EditionItem> Editions { get; set; }
-};
+
+    public static BookQueryResult From(Book book) => new ()
+    {
+        BookId = book.Id.Value,
+        Title = book.Title.ToString(),
+        CoverImageUrl = "",
+        Authors = book.Authors?.Select(author=>Author.From(author.Person)),
+        Editions = book.Editions.Select(EditionItem.From)
+    };
+}
