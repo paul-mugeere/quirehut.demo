@@ -3,9 +3,9 @@ using QuireHut.Demo.Application.Books.Queries.ReadModels;
 using QuireHut.Demo.Domain.Books;
 using QuireHut.Demo.Domain.Books.ValueObjects;
 
-namespace QuireHut.Demo.Infrastructure.Persistence.Books.QueryHandlers;
+namespace QuireHut.Demo.Infrastructure.Persistence.Books;
 
-public static class BooksQueriesExtensions
+public static class BooksQueries
 {
     public static IQueryable<Book> Aggregates(this IQueryable<Book> books, BookId? bookId = null)
     {

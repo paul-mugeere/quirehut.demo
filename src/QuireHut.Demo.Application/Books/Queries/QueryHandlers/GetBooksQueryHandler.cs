@@ -1,23 +1,18 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using QuireHut.Demo.Application.Books.Queries;
 using QuireHut.Demo.Application.Books.Queries.ReadModels;
+using QuireHut.Demo.Application.Books.Queries.Services;
 using QuireHut.Demo.Application.Common;
 
-namespace QuireHut.Demo.Infrastructure.Persistence.Books.QueryHandlers;
+namespace QuireHut.Demo.Application.Books.Queries.QueryHandlers;
 
-public class GetBooksQueryHandler(IDbContextFactory<QuirehutDemoDbContext> dbContextFactory) 
+public class GetBooksQueryHandler(IBookQueryService bookQueryService)
     : IRequestHandler<GetBooksQuery, Result<BookCollectionQueryResult>>
 {
     public async Task<Result<BookCollectionQueryResult>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var context = await dbContextFactory.CreateDbContextAsync(cancellationToken);
-            var bookTitles = await context.Books.Aggregates()
-                .Select(book => BookQueryResult.From(book))
-                .ToListAsync(cancellationToken: cancellationToken)
-                .ConfigureAwait(false);
+            var bookTitles = await bookQueryService.GetAllBooks();
             return Result<BookCollectionQueryResult>.Success(BookCollectionQueryResult.CreateNew(bookTitles));
         }
         catch (Exception e)

@@ -1,9 +1,8 @@
 using MediatR;
-using QuireHut.Demo.Application.Books.Commands;
 using QuireHut.Demo.Application.Common;
 using QuireHut.Demo.Domain.Books.Repositories;
 
-namespace QuireHut.Demo.Application.Books.CommandHandlers;
+namespace QuireHut.Demo.Application.Books.Commands.CommandHandlers;
 
 public class CreateBookCommandHandler(IBookRepository bookRepository) : IRequestHandler<CreateBookCommand, Result<Guid>>
 {

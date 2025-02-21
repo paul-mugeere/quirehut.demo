@@ -1,5 +1,5 @@
 using QuireHut.Demo.Application.Books.Commands;
-using QuireHut.Demo.Infrastructure.Persistence.Books.QueryHandlers;
+using QuireHut.Demo.Application.Books.Queries.QueryHandlers;
 
 namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions
 {

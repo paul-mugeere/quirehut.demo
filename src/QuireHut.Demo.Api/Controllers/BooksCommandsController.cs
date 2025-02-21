@@ -9,13 +9,13 @@ namespace QuireHut.Demo.Api.Controllers;
 
 [ApiController]
 [Route("api/inventory/books")]
-public class BooksCommandsController(IMediator mediator, IMapper mapper) : ControllerBase
+public class BooksCommandsController(ISender sender, IMapper mapper) : ControllerBase
 {
     [HttpPost("")]
     public async Task<ActionResult<BookIdResponse>> Post(PostBookRequest bookRequest)
     {
         var command = mapper.Map<CreateBookCommand>(bookRequest);
-        var result = await mediator.Send(command);
+        var result = await sender.Send(command);
         
         return result.IsSuccess
             ? CreatedAtRoute(

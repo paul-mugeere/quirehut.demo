@@ -10,13 +10,13 @@ namespace QuireHut.Demo.Api.Controllers;
 
 [ApiController]
 [Route("api/inventory/books")]
-public class BooksQueryController(IMediator mediator, IMapper mapper) : ControllerBase
+public class BooksQueryController(ISender sender, IMapper mapper) : ControllerBase
 {
     
     [HttpGet("")]
     public async Task<ActionResult<BooksCollectionResponse>> Get()
     {
-        var result = await mediator.Send(new GetBooksQuery());
+        var result = await sender.Send(new GetBooksQuery());
         var books = mapper.Map<List<BookQueryResult>?, List<Book>?>(result.Data?.Books) ?? [];
         var booksResponse = BooksCollectionResponse.CreateNew(books);
         
@@ -28,7 +28,7 @@ public class BooksQueryController(IMediator mediator, IMapper mapper) : Controll
     [HttpGet("{bookId}", Name = "GetBookById")]
     public async Task<ActionResult<BookDetailsResponse>> Get(Guid bookId)
     {
-        var result = await mediator.Send(new GetBookDetailsQuery(bookId));
+        var result = await sender.Send(new GetBookDetailsQuery(bookId));
         var bookDetails = mapper.Map<BookDetails>(result.Data);
         var getBookDetailsResponse = BookDetailsResponse.CreateNew(bookDetails);
         
