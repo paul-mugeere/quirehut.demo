@@ -14,13 +14,13 @@ public static class BooksQueries
             .Where(book => !bookId.HasValue || book.Id == bookId).AsNoTracking();
     }
 
-    public static async Task<List<BookTitleWithAuthorsQueryResult>> BookTitleWithAuthorsAsync(this IQueryable<Book> books,
+    public static async Task<List<BookWithAuthorsQueryResult>> BookTitleWithAuthorsAsync(this IQueryable<Book> books,
         EditionId? editionId = null)
     {
         return await books.Aggregates()
             .SelectMany(book => book.Editions
             .Where(edition => !editionId.HasValue || edition.Id == editionId).Select(edition =>
-            new BookTitleWithAuthorsQueryResult
+            new BookWithAuthorsQueryResult
             {
                 BookId = book.Id.Value,
                 EditionId = edition.Id.Value,

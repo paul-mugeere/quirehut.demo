@@ -7,32 +7,36 @@ namespace QuireHut.Demo.Infrastructure.Persistence.Books;
 
 public class BookQueryService(IDbContextFactory<QuirehutDemoDbContext> dbContextFactory) : IBookQueryService
 {
-    public async Task<List<BookQueryResult>> GetAllBooks()
+    public async Task<List<BookListingQueryResult>> GetBookListings()
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         return await context.Books.Aggregates()
-            .Select(book => BookQueryResult.From(book))
+            .Select(book => BookListingQueryResult.From(book))
             .ToListAsync()
             .ConfigureAwait(false);
     }
 
-    public async Task<BookQueryResult> GetBooksWithId(BookId bookId)
+    public async Task<BookListingQueryResult> GetBookListingById(BookId bookId)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
         return await context.Books.Aggregates(bookId)
-            .Select(book => BookQueryResult.From(book))
+            .Select(book => BookListingQueryResult.From(book))
             .FirstOrDefaultAsync().ConfigureAwait(false);
     }
 
-    public async Task<List<BookTitleWithAuthorsQueryResult>> GetBookTitlesWithAuthors()
+    public async Task<List<BookWithAuthorsQueryResult>> GetBooksWithAuthors()
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        return await context.Books.BookTitleWithAuthorsAsync().ConfigureAwait(false);
+        return await context.Books.
+            BookTitleWithAuthorsAsync()
+            .ConfigureAwait(false);
     }
 
-    public async Task<BookTitleWithAuthorsQueryResult> GetBookTitleWithAuthors(EditionId editionId)
+    public async Task<BookWithAuthorsQueryResult> GetBookWithAuthors(EditionId editionId)
     {
         var context = await dbContextFactory.CreateDbContextAsync();
-        return (await context.Books.BookTitleWithAuthorsAsync(editionId)).FirstOrDefault();
+        return (await context.Books.
+            BookTitleWithAuthorsAsync(editionId))
+            .FirstOrDefault();
     }
 }

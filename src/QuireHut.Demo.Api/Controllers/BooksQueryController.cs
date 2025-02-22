@@ -4,36 +4,34 @@ using Microsoft.AspNetCore.Mvc;
 using QuireHut.Demo.Api.Models;
 using QuireHut.Demo.Api.Responses;
 using QuireHut.Demo.Application.Books.Queries;
-using QuireHut.Demo.Application.Books.Queries.ReadModels;
 
 namespace QuireHut.Demo.Api.Controllers;
 
+// [Authorize]
 [ApiController]
-[Route("api/inventory/books")]
+[Route("api/catalog/books")]
 public class BooksQueryController(ISender sender, IMapper mapper) : ControllerBase
 {
-    
     [HttpGet("")]
-    public async Task<ActionResult<BooksCollectionResponse>> Get()
+    public async Task<ActionResult<BooksResponse>> Get()
     {
         var result = await sender.Send(new GetBooksQuery());
-        var books = mapper.Map<List<BookQueryResult>?, List<Book>?>(result.Data?.Books) ?? [];
-        var booksResponse = BooksCollectionResponse.CreateNew(books);
-        
-        return result.IsSuccess
-            ? Ok(booksResponse)
-            : StatusCode(500, result.Error);
+        var response = new BooksResponse()
+        {
+            Books = mapper.Map<List<Book>?>(result.Data?.Books) ?? []
+        };
+       return result.IsSuccess
+         ? Ok(response)
+          : StatusCode(500, result.Error);
     }
 
-    [HttpGet("{bookId}", Name = "GetBookById")]
-    public async Task<ActionResult<BookDetailsResponse>> Get(Guid bookId)
+    [HttpGet("{bookId:guid}/editions/{editionId:guid}")]
+    public async Task<ActionResult<BookDetailsResponse>> Get(Guid bookId,Guid editionId)
     {
-        var result = await sender.Send(new GetBookDetailsQuery(bookId));
-        var bookDetails = mapper.Map<BookDetails>(result.Data);
-        var getBookDetailsResponse = BookDetailsResponse.CreateNew(bookDetails);
-        
+        var result = await sender.Send(new GetBookDetailsQuery(bookId, editionId));
+        var response = new BookDetailsResponse(mapper.Map<BookDetails>(result.Data));
         return result.IsSuccess
-            ? Ok(getBookDetailsResponse)
+            ? Ok(response)
             : StatusCode(500, result.Error);
     }
 }

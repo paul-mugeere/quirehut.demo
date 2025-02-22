@@ -10,7 +10,7 @@ namespace QuireHut.Demo.Api.Extensions.IServiceCollectionExtensions
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(typeof(CreateBookCommand).Assembly);
-                cfg.RegisterServicesFromAssembly(typeof(GetBooksQueryHandler).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(GetBookListingsQueryQueryHandler).Assembly);
             });
             return services;
         }

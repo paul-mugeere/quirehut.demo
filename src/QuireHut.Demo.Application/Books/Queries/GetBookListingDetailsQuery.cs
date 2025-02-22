@@ -4,4 +4,4 @@ using QuireHut.Demo.Application.Common;
 
 namespace QuireHut.Demo.Application.Books.Queries;
 
-public record GetBookTitlesQuery() : IRequest<Result<BookTitleCollectionQueryResult>>;
+public record GetBookListingDetailsQuery(Guid BookId):IRequest<Result<BookListingQueryResult>>;

@@ -7,18 +7,18 @@ using QuireHut.Demo.Domain.Books.ValueObjects;
 namespace QuireHut.Demo.Application.Books.Queries.QueryHandlers;
 
 public class GetBookDetailsQueryHandler(IBookQueryService bookQueryService)
-    : IRequestHandler<GetBookDetailsQuery, Result<BookQueryResult>>
+    : IRequestHandler<GetBookDetailsQuery, Result<BookWithAuthorsQueryResult>>
 {
-    public async Task<Result<BookQueryResult>> Handle(GetBookDetailsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<BookWithAuthorsQueryResult>> Handle(GetBookDetailsQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var result = await bookQueryService.GetBooksWithId(new BookId(request.BookId));
-            return Result<BookQueryResult>.Success(result??new BookQueryResult());
+            var result = await bookQueryService.GetBookWithAuthors(new EditionId(request.EditionId)).ConfigureAwait(false);
+          return Result<BookWithAuthorsQueryResult>.Success(result);
         }
         catch (Exception e)
         {
-            return Result<BookQueryResult>.FromException(e);
+            return Result<BookWithAuthorsQueryResult>.FromException(e);
         }
     }
 }

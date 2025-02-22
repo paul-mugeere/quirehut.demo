@@ -2,7 +2,7 @@ using QuireHut.Demo.Domain.Books.Enums;
 
 namespace QuireHut.Demo.Application.Books.Queries.ReadModels;
 
-public record BookTitleWithAuthorsQueryResult
+public record BookWithAuthorsQueryResult
 {
     public Guid EditionId { get; init; }
     public Guid BookId { get; init; }

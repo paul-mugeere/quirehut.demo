@@ -1,13 +1,13 @@
 namespace QuireHut.Demo.Application.Books.Queries.ReadModels;
 
-public record BookCollectionQueryResult
+public record BookListingCollectionQueryResult
 {
-    public List<BookQueryResult> Books { get; init; } = new();
+    public List<BookListingQueryResult> Books { get; init; } = new();
 
-    private BookCollectionQueryResult(List<BookQueryResult> books)
+    private BookListingCollectionQueryResult(List<BookListingQueryResult> books)
     {
         Books = books;
     }
 
-    public static BookCollectionQueryResult CreateNew(List<BookQueryResult> books) => new (books);
+    public static BookListingCollectionQueryResult CreateNew(List<BookListingQueryResult> books) => new (books);
 }

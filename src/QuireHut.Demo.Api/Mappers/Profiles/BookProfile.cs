@@ -1,25 +1,21 @@
 using AutoMapper;
 using QuireHut.Demo.Api.Models;
-using QuireHut.Demo.Api.Requests;
-using QuireHut.Demo.Application.Books.Commands;
 using QuireHut.Demo.Application.Books.Queries.ReadModels;
-using Dimensions = QuireHut.Demo.Application.Books.Queries.ReadModels.Dimensions;
-using Publisher = QuireHut.Demo.Application.Books.Queries.ReadModels.Publisher;
+using Author = QuireHut.Demo.Api.Models.Author;
 
 namespace QuireHut.Demo.Api.Mappers.Profiles;
 
-public class BookProfile: Profile
+public class BookProfile : Profile
 {
     public BookProfile()
     {
-        CreateMap<EditionItem, Edition>();
-        CreateMap<Dimensions, Models.Dimensions>().ReverseMap();
-        CreateMap<Publisher, Models.Publisher>().ReverseMap();
-        CreateMap<Author, BookAuthor>();
-        CreateMap<BookQueryResult, Book>();
-        CreateMap<BookQueryResult, BookDetails>();
-        CreateMap<PostBookRequest, CreateBookCommand>();
-        CreateMap<PostBookEdition, EditionItem>();
-        CreateMap<BookTitleWithAuthorsQueryResult, BookTitle>();
+        CreateMap<BookWithAuthorsQueryResult, Book>();
+        CreateMap<BookWithAuthorsQueryResult, BookDetails>()
+            .ForMember(dest=>dest.PublicationYear, src =>
+            {
+                src.PreCondition(dto => dto.PublicationYear.HasValue);
+                src.MapFrom(dto => dto.PublicationYear.Value);
+            });
+        CreateMap<Application.Books.Queries.ReadModels.Author, Author>();
     }
 }

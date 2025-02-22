@@ -9,10 +9,10 @@ namespace QuireHut.Demo.Api.Controllers;
 
 [ApiController]
 [Route("api/inventory/books")]
-public class BooksCommandsController(ISender sender, IMapper mapper) : ControllerBase
+public class BookListingsCommandsController(ISender sender, IMapper mapper) : ControllerBase
 {
     [HttpPost("")]
-    public async Task<ActionResult<BookIdResponse>> Post(PostBookRequest bookRequest)
+    public async Task<ActionResult<BookListingIdResponse>> Post(PostBookRequest bookRequest)
     {
         var command = mapper.Map<CreateBookCommand>(bookRequest);
         var result = await sender.Send(command);
@@ -20,7 +20,7 @@ public class BooksCommandsController(ISender sender, IMapper mapper) : Controlle
         return result.IsSuccess
             ? CreatedAtRoute(
                 routeName:"GetBookById",
-                new {bookId=result.Data}, new BookIdResponse(result.Data))
+                new {bookId=result.Data}, new BookListingIdResponse(result.Data))
             : StatusCode(500, result.Error);
     }
 }
